@@ -1,9 +1,10 @@
-import { getCollection } from '@/database/collections';
-import { Food } from '@/types';
+import { model } from 'mongoose';
+import { foodSchema } from '@/models';
+import type { Food } from '@/types';
 
 const getAllService = async () => {
-  const db = await getCollection('Foods');
-  const foods = await db?.find<Food>({}).sort({ number: 1 }).toArray();
+  const collection = model('Foods', foodSchema, 'Foods');
+  const foods = await collection?.find<Food>().sort({ number: 1 });
 
   if (foods?.length === 0) {
     throw new Error('There are no foods');
