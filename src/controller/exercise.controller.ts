@@ -11,10 +11,8 @@ const getAll = async (_: Express.Request, res: Express.Response) => {
 
     res.status(200).send(exercises);
   } catch (error) {
-    if (error) {
-      const err = error as Error;
-      res.status(500).send({ message: err.message });
-    }
+    const err = error as Error;
+    res.status(500).send({ message: err.message });
   }
 };
 

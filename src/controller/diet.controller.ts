@@ -16,10 +16,8 @@ const findDiet = async (req: Express.Request, res: Express.Response) => {
       diet: diets?.diet
     });
   } catch (error) {
-    if (error) {
-      const err = error as Error;
-      res.status(500).send({ message: err.message });
-    }
+    const err = error as Error;
+    res.status(500).send({ message: err.message });
   }
 };
 
@@ -38,10 +36,8 @@ const addDiet = async (req: Express.Request, res: Express.Response) => {
       diet: userDiet.diet
     });
   } catch (error) {
-    if (error) {
-      const err = error as Error;
-      return res.status(500).send({ message: err.message });
-    }
+    const err = error as Error;
+    return res.status(500).send({ message: err.message });
   }
 };
 

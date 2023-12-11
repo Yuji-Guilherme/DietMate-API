@@ -21,10 +21,8 @@ const createUser = async (req: Express.Request, res: Express.Response) => {
       user: { username, id: user.id }
     });
   } catch (error) {
-    if (error) {
-      const err = error as Error;
-      res.status(500).send({ message: err.message });
-    }
+    const err = error as Error;
+    res.status(500).send({ message: err.message });
   }
 };
 
@@ -47,10 +45,8 @@ const updateUser = async (req: Express.Request, res: Express.Response) => {
 
     res.status(200).send({ message: 'User successfully updated' });
   } catch (error) {
-    if (error) {
-      const err = error as Error;
-      res.status(500).send({ message: err.message });
-    }
+    const err = error as Error;
+    res.status(500).send({ message: err.message });
   }
 };
 

@@ -32,10 +32,8 @@ const validUser = async (
 
     next();
   } catch (error) {
-    if (error) {
-      const err = error as Error;
-      res.status(500).send({ message: err.message });
-    }
+    const err = error as Error;
+    res.status(500).send({ message: err.message });
   }
 };
 
