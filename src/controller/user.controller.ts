@@ -2,12 +2,13 @@ import type Express from 'express';
 import { Types } from 'mongoose';
 import { User, Request } from '@/types';
 import {
-  createService,
+  createUserService,
+  updateUserService,
   findDietService,
   addDietService
 } from '@/services/user.service';
 
-const create = async (req: Express.Request, res: Express.Response) => {
+const createUser = async (req: Express.Request, res: Express.Response) => {
   try {
     const { username, password }: User = req.body;
 
@@ -15,7 +16,7 @@ const create = async (req: Express.Request, res: Express.Response) => {
       res.status(400).send({ message: 'Submit all fields' });
     }
 
-    const user = await createService({ username, password });
+    const user = await createUserService({ username, password });
 
     if (!user) {
       res.status(400).send({ message: 'Error creating user' });
@@ -36,6 +37,18 @@ const create = async (req: Express.Request, res: Express.Response) => {
 const findUser = async (req: Request, res: Express.Response) => {
   const { user } = req;
   res.status(200).send(user);
+};
+
+const updateUser = async (req: Express.Request, res: Express.Response) => {
+  const { id } = req.params;
+  const { username, password } = req.body;
+
+  if (!username && !password)
+    res.status(400).send({ message: 'Submit at least one field for update' });
+
+  await updateUserService(id, { username, password });
+
+  res.status(200).send({ message: 'User successfully updated' });
 };
 
 const findDiet = async (req: Express.Request, res: Express.Response) => {
@@ -67,4 +80,4 @@ const addDiet = async (req: Express.Request, res: Express.Response) => {
   });
 };
 
-export { create, findUser, findDiet, addDiet };
+export { createUser, findUser, updateUser, findDiet, addDiet };

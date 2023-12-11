@@ -2,7 +2,8 @@ import { Router } from 'express';
 import { validId, validUser } from '@/middlewares/global.middlewares';
 import { validDiet } from '@/middlewares/diet.middlewares';
 import {
-  create,
+  createUser,
+  updateUser,
   findUser,
   findDiet,
   addDiet
@@ -10,8 +11,9 @@ import {
 
 const userRouter = Router();
 
-userRouter.post('', create);
+userRouter.post('', createUser);
 userRouter.get('/:id', validId, validUser, findUser);
+userRouter.patch('/:id', validId, validUser, updateUser);
 userRouter.get('/:id/diet', validId, validUser, findDiet);
 userRouter.post('/:id/diet', validId, validUser, validDiet, addDiet);
 
