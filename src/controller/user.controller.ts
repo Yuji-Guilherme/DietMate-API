@@ -6,14 +6,14 @@ const createUser = async (req: Express.Request, res: Express.Response) => {
   const { username, password }: User = req.body;
 
   if (!username || !password) {
-    res.status(400).send({ message: 'Submit all fields' });
+    return res.status(400).send({ message: 'Submit all fields' });
   }
 
   try {
     const user = await createUserService({ username, password });
 
     if (!user) {
-      res.status(400).send({ message: 'Error creating user' });
+      return res.status(400).send({ message: 'Error creating user' });
     }
 
     res.status(201).send({
@@ -30,7 +30,7 @@ const createUser = async (req: Express.Request, res: Express.Response) => {
 
 const findUser = (req: Request, res: Express.Response) => {
   const { user } = req;
-  res.status(200).send(user);
+  return res.status(200).send(user);
 };
 
 const updateUser = async (req: Express.Request, res: Express.Response) => {
@@ -38,7 +38,9 @@ const updateUser = async (req: Express.Request, res: Express.Response) => {
   const { username, password } = req.body;
 
   if (!username && !password)
-    res.status(400).send({ message: 'Submit at least one field for update' });
+    return res
+      .status(400)
+      .send({ message: 'Submit at least one field for update' });
 
   try {
     await updateUserService(id, { username, password });

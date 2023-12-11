@@ -9,7 +9,7 @@ const findDiet = async (req: Express.Request, res: Express.Response) => {
     const diets = await findDietService(id);
 
     if (!diets?.diet) {
-      res.status(204).send();
+      return res.status(204).send();
     }
 
     res.status(200).send({
@@ -33,14 +33,14 @@ const addDiet = async (req: Express.Request, res: Express.Response) => {
 
     const userDiet = await addDietService(id, diet, dietId, oldUserDiet);
 
-    res.status(201).send({
+    return res.status(201).send({
       message: 'Diet created successfully',
       diet: userDiet.diet
     });
   } catch (error) {
     if (error) {
       const err = error as Error;
-      res.status(500).send({ message: err.message });
+      return res.status(500).send({ message: err.message });
     }
   }
 };

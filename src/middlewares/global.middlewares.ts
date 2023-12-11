@@ -10,7 +10,8 @@ const validId = (
 ) => {
   const { id } = req.params;
 
-  if (!isValidObjectId(id)) res.status(400).send({ message: 'Invalid ID' });
+  if (!isValidObjectId(id))
+    return res.status(400).send({ message: 'Invalid ID' });
 
   next();
 };
@@ -25,7 +26,7 @@ const validUser = async (
   try {
     const user: User | null = await findUserService(id);
 
-    if (!user) res.status(404).send({ message: 'User not found' });
+    if (!user) return res.status(404).send({ message: 'User not found' });
 
     req.user = user!;
 

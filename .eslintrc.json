@@ -23,7 +23,8 @@
         "prettier/prettier": "error",
         "import/prefer-default-export": "off",
         "no-console": "off",
-        "@typescript-eslint/naming-convention": "off"
+        "@typescript-eslint/naming-convention": "off",
+        "consistent-return": "off"
     },
     "settings": {
         "import/parsers": {
