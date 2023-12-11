@@ -1,11 +1,11 @@
 import { Food } from '@/types';
 import { Schema, Types } from 'mongoose';
 
-interface FoodSchema extends Food {
+interface IFoodSchema extends Food {
   _id: Types.ObjectId;
 }
 
-const foodSchema = new Schema<FoodSchema>(
+const FoodSchema = new Schema<IFoodSchema>(
   {
     calories: { type: Number },
     carbs: { type: Number },
@@ -18,4 +18,4 @@ const foodSchema = new Schema<FoodSchema>(
   { collection: 'Foods' }
 );
 
-export { foodSchema };
+export { FoodSchema };

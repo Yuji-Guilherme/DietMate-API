@@ -5,6 +5,10 @@ const getAll = async (_: Express.Request, res: Express.Response) => {
   try {
     const foods = await getAllService();
 
+    if (foods?.length === 0) {
+      res.status(404).send({ message: 'There are no foods' });
+    }
+
     res.status(200).send(foods);
   } catch (error) {
     if (error) {

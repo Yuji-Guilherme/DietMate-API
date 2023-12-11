@@ -1,4 +1,5 @@
-import { exerciseSchema } from './Exercise';
-import { foodSchema } from './Food';
+import { ExerciseSchema } from './Exercise';
+import { FoodSchema } from './Food';
+import { UserSchema } from './User';
 
-export { exerciseSchema, foodSchema };
+export { ExerciseSchema, FoodSchema, UserSchema };

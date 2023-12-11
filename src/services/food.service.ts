@@ -1,16 +1,9 @@
 import { model } from 'mongoose';
-import { foodSchema } from '@/models';
+import { FoodSchema } from '@/models';
 import type { Food } from '@/types';
 
-const getAllService = async () => {
-  const collection = model('Foods', foodSchema, 'Foods');
-  const foods = await collection?.find<Food>().sort({ number: 1 });
+const collection = model('Foods', FoodSchema, 'Foods');
 
-  if (foods?.length === 0) {
-    throw new Error('There are no foods');
-  }
-
-  return foods;
-};
+const getAllService = async () => collection?.find<Food>().sort({ number: 1 });
 
 export { getAllService };

@@ -1,11 +1,11 @@
 import { Exercise } from '@/types';
 import { Schema, Types } from 'mongoose';
 
-interface ExerciseSchema extends Exercise {
+interface IExerciseSchema extends Exercise {
   _id: Types.ObjectId;
 }
 
-const exerciseSchema = new Schema<ExerciseSchema>(
+const ExerciseSchema = new Schema<IExerciseSchema>(
   {
     exercise: { type: String, unique: true, required: true },
     number: { type: Number, unique: true, required: true },
@@ -21,4 +21,4 @@ const exerciseSchema = new Schema<ExerciseSchema>(
   { collection: 'Exercises' }
 );
 
-export { exerciseSchema };
+export { ExerciseSchema };
