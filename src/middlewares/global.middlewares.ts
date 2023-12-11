@@ -8,11 +8,18 @@ const validId = async (
   res: Express.Response,
   next: Express.NextFunction
 ) => {
-  const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-  if (!isValidObjectId(id)) res.status(400).send({ message: 'Invalid ID' });
+    if (!isValidObjectId(id)) res.status(400).send({ message: 'Invalid ID' });
 
-  next();
+    next();
+  } catch (error) {
+    if (error) {
+      const err = error as Error;
+      res.status(500).send({ message: err.message });
+    }
+  }
 };
 
 const validUser = async (
@@ -20,14 +27,21 @@ const validUser = async (
   res: Express.Response,
   next: Express.NextFunction
 ) => {
-  const { id } = req.params;
-  const user: User | null = await findUserService(id);
+  try {
+    const { id } = req.params;
+    const user: User | null = await findUserService(id);
 
-  if (!user) res.status(400).send({ message: 'User not found' });
+    if (!user) res.status(400).send({ message: 'User not found' });
 
-  req.user = user!;
+    req.user = user!;
 
-  next();
+    next();
+  } catch (error) {
+    if (error) {
+      const err = error as Error;
+      res.status(500).send({ message: err.message });
+    }
+  }
 };
 
 export { validId, validUser };
