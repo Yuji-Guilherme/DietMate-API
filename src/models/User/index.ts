@@ -1,5 +1,6 @@
-import { User, UserDiet, UserWorkout } from '@/types';
 import { Schema, Types } from 'mongoose';
+import { hash } from 'bcryptjs';
+import { User, UserDiet, UserWorkout } from '@/types';
 import { FoodSchema } from '../Food';
 import { ExerciseSchema } from '../Exercise';
 
@@ -49,5 +50,17 @@ const UserSchema = new Schema<IUserSchema>(
   },
   { collection: 'Users' }
 );
+
+UserSchema.pre('save', async function (next) {
+  this.password = await hash(this.password, 10);
+  next();
+});
+
+UserSchema.pre('findOneAndUpdate', async function (next) {
+  const userUpdated = this.getUpdate() as unknown as User;
+  if (userUpdated.password)
+    userUpdated.password = await hash(userUpdated.password, 10);
+  next();
+});
 
 export { UserSchema };

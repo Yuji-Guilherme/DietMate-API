@@ -1,13 +1,8 @@
 import { Router } from 'express';
 import { validId, validUser } from '@/middlewares/global.middlewares';
 import { validDiet } from '@/middlewares/diet.middlewares';
-import {
-  createUser,
-  updateUser,
-  findUser,
-  findDiet,
-  addDiet
-} from '@/controller/user.controller';
+import { createUser, updateUser, findUser } from '@/controller/user.controller';
+import { findDiet, addDiet } from '@/controller/diet.controller';
 
 const userRouter = Router();
 

@@ -3,23 +3,16 @@ import { isValidObjectId } from 'mongoose';
 import { findUserService } from '@/services/user.service';
 import { Request, User } from '@/types';
 
-const validId = async (
+const validId = (
   req: Express.Request,
   res: Express.Response,
   next: Express.NextFunction
 ) => {
-  try {
-    const { id } = req.params;
+  const { id } = req.params;
 
-    if (!isValidObjectId(id)) res.status(400).send({ message: 'Invalid ID' });
+  if (!isValidObjectId(id)) res.status(400).send({ message: 'Invalid ID' });
 
-    next();
-  } catch (error) {
-    if (error) {
-      const err = error as Error;
-      res.status(500).send({ message: err.message });
-    }
-  }
+  next();
 };
 
 const validUser = async (
@@ -27,11 +20,12 @@ const validUser = async (
   res: Express.Response,
   next: Express.NextFunction
 ) => {
+  const { id } = req.params;
+
   try {
-    const { id } = req.params;
     const user: User | null = await findUserService(id);
 
-    if (!user) res.status(400).send({ message: 'User not found' });
+    if (!user) res.status(404).send({ message: 'User not found' });
 
     req.user = user!;
 
