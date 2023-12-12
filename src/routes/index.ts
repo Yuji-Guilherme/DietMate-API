@@ -4,6 +4,7 @@ import { exerciseRouter } from './exercise.router';
 import { userRouter } from './user.router';
 import { authRouter } from './auth.router';
 import { dietRouter } from './diet.router';
+import { workoutRouter } from './workout.router';
 
 const router = Router();
 
@@ -12,5 +13,6 @@ router.use('/exercise', exerciseRouter);
 router.use('/user', userRouter);
 router.use('/auth', authRouter);
 router.use('/diet', dietRouter);
+router.use('/workout', workoutRouter);
 
 export default router;

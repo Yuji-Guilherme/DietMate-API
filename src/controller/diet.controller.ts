@@ -1,18 +1,32 @@
 import type Express from 'express';
 import { Types } from 'mongoose';
 import type { Request } from '@/types';
-import { addDietService, deleteDietService } from '@/services/diet.service';
+import {
+  addDietService,
+  deleteAllDietService,
+  updateDietService,
+  deleteOneDietService
+} from '@/services/diet.service';
 
-const findDiet = async (req: Request, res: Express.Response) => {
+const findAllDiet = async (req: Request, res: Express.Response) => {
   const { user } = req;
 
-  if (!user?.diet) {
-    return res.status(204).send();
-  }
-
   res.status(200).send({
-    diet: user.diet
+    diet: user!.diet
   });
+};
+
+const deleteAllDiet = async (req: Request, res: Express.Response) => {
+  const { id } = req.user!;
+
+  try {
+    await deleteAllDietService(id!);
+
+    res.status(200).send({ message: 'Diets successfully deleted' });
+  } catch (error) {
+    const err = error as Error;
+    return res.status(500).send({ message: err.message });
+  }
 };
 
 const addDiet = async (req: Request, res: Express.Response) => {
@@ -31,21 +45,55 @@ const addDiet = async (req: Request, res: Express.Response) => {
     });
   } catch (error) {
     const err = error as Error;
-    return res.status(500).send({ message: err.message });
+    res.status(500).send({ message: err.message });
   }
 };
 
-const deleteDiet = async (req: Request, res: Express.Response) => {
-  const { id } = req.user!;
+const findOneDiet = async (req: Request, res: Express.Response) => {
+  const { id } = req.params;
+  const { user } = req;
+
+  res.status(200).send({
+    diet: user!.diet![id]
+  });
+};
+
+const updateDiet = async (req: Request, res: Express.Response) => {
+  const { id } = req.params;
+  const { diet } = req.body;
+  const { id: userId, diet: userDiet } = req.user!;
 
   try {
-    await deleteDietService(id!);
+    await updateDietService(userId!, diet, id, userDiet!);
 
-    res.status(200).send({ message: 'Diets successfully deleted' });
+    res.status(200).send({ message: 'Diet successfully updated' });
   } catch (error) {
     const err = error as Error;
-    return res.status(500).send({ message: err.message });
+    res.status(500).send({ message: err.message });
   }
 };
 
-export { findDiet, addDiet, deleteDiet };
+const deleteOneDiet = async (req: Request, res: Express.Response) => {
+  const { id } = req.params;
+  const { id: userId, diet: userDiet } = req.user!;
+
+  delete userDiet![id];
+
+  try {
+    await deleteOneDietService(userId!, userDiet!);
+
+    res.status(200).send({ message: 'Diet successfully deleted' });
+  } catch (error) {
+    const err = error as Error;
+    res.status(500).send({ message: err.message });
+  }
+};
+
+export {
+  findAllDiet,
+  deleteAllDiet,
+  addDiet,
+  findOneDiet,
+  updateDiet,
+  deleteOneDiet
+};

@@ -1,12 +1,36 @@
 import { Router } from 'express';
-import { validDiet } from '@/middlewares/diet.middlewares';
-import { findDiet, addDiet, deleteDiet } from '@/controller/diet.controller';
 import { authMiddleware } from '@/middlewares/auth.middlewares';
+import { validId } from '@/middlewares/global.middlewares';
+import { validDiet, userDietExist } from '@/middlewares/diet.middlewares';
+import {
+  findAllDiet,
+  addDiet,
+  deleteAllDiet,
+  findOneDiet,
+  updateDiet,
+  deleteOneDiet
+} from '@/controller/diet.controller';
 
 const dietRouter = Router();
 
-dietRouter.get('', authMiddleware, findDiet);
+dietRouter.get('', authMiddleware, userDietExist, findAllDiet);
+dietRouter.delete('', authMiddleware, userDietExist, deleteAllDiet);
 dietRouter.post('', validDiet, authMiddleware, addDiet);
-dietRouter.delete('', authMiddleware, deleteDiet);
+dietRouter.get('/:id', validId, authMiddleware, userDietExist, findOneDiet);
+dietRouter.patch(
+  '/:id',
+  validId,
+  validDiet,
+  authMiddleware,
+  userDietExist,
+  updateDiet
+);
+dietRouter.delete(
+  '/:id',
+  validId,
+  authMiddleware,
+  userDietExist,
+  deleteOneDiet
+);
 
 export { dietRouter };

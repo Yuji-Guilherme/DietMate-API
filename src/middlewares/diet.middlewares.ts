@@ -1,5 +1,5 @@
 import type Express from 'express';
-import { UserFood } from '@/types';
+import { UserFood, Request } from '@/types';
 
 const validDiet = (
   req: Express.Request,
@@ -14,15 +14,31 @@ const validDiet = (
   if (!diet.title)
     return res.status(400).send({ message: 'Submit a title for diet' });
 
-  dietArr.forEach((item) => {
-    const { _id, description, grams, number } = item;
+  const checker = (item: UserFood) =>
+    item._id && item.number && item.description && item.grams;
 
-    if (!_id || !description || !grams || !number) {
-      return res.status(400).send({ message: 'Submit a valid food' });
-    }
-  });
+  if (!dietArr.every(checker))
+    return res.status(400).send({ message: 'Submit a valid food' });
 
   next();
 };
 
-export { validDiet };
+const userDietExist = (
+  req: Request,
+  res: Express.Response,
+  next: Express.NextFunction
+) => {
+  const { id } = req.params;
+  const { user } = req;
+
+  if (!user?.diet || Object.keys(user.diet).length === 0) {
+    return res.status(204).send();
+  }
+
+  if (id && !user.diet[id])
+    return res.status(404).send({ message: 'Diet not found' });
+
+  next();
+};
+
+export { validDiet, userDietExist };
