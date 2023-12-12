@@ -16,4 +16,11 @@ const addDietService = async (
     { new: true, upsert: true, select: 'diet' }
   );
 
-export { addDietService };
+const deleteDietService = async (id: string) =>
+  collection.findByIdAndUpdate(
+    id,
+    { diet: {} },
+    { upsert: true, select: 'diet' }
+  );
+
+export { addDietService, deleteDietService };
