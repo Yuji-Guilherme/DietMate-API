@@ -63,4 +63,4 @@ UserSchema.pre('findOneAndUpdate', async function (next) {
   next();
 });
 
-export { UserSchema };
+export { UserSchema, IUserSchema };

@@ -1,6 +1,10 @@
 import type Express from 'express';
 import { User, Request } from '@/types';
-import { createUserService, updateUserService } from '@/services/user.service';
+import {
+  createUserService,
+  deleteUserService,
+  updateUserService
+} from '@/services/user.service';
 
 const createUser = async (req: Express.Request, res: Express.Response) => {
   const { username, password }: User = req.body;
@@ -28,11 +32,11 @@ const createUser = async (req: Express.Request, res: Express.Response) => {
 
 const findUser = (req: Request, res: Express.Response) => {
   const { user } = req;
-  return res.status(200).send(user);
+  return res.status(200).send({ user });
 };
 
-const updateUser = async (req: Express.Request, res: Express.Response) => {
-  const { id } = req.params;
+const updateUser = async (req: Request, res: Express.Response) => {
+  const { _id } = req.user!;
   const { username, password } = req.body;
 
   if (!username && !password)
@@ -41,7 +45,7 @@ const updateUser = async (req: Express.Request, res: Express.Response) => {
       .send({ message: 'Submit at least one field for update' });
 
   try {
-    await updateUserService(id, { username, password });
+    await updateUserService(_id, { username, password });
 
     res.status(200).send({ message: 'User successfully updated' });
   } catch (error) {
@@ -50,4 +54,17 @@ const updateUser = async (req: Express.Request, res: Express.Response) => {
   }
 };
 
-export { createUser, findUser, updateUser };
+const deleteUser = async (req: Request, res: Express.Response) => {
+  const { _id } = req.user!;
+
+  try {
+    await deleteUserService(_id);
+
+    res.status(200).send({ message: 'User successfully deleted' });
+  } catch (error) {
+    const err = error as Error;
+    res.status(500).send({ message: err.message });
+  }
+};
+
+export { createUser, findUser, updateUser, deleteUser };

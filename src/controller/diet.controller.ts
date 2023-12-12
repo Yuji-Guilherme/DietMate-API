@@ -1,39 +1,33 @@
 import type Express from 'express';
 import { Types } from 'mongoose';
-import { findDietService, addDietService } from '@/services/diet.service';
+import type { Request } from '@/types';
+import { addDietService } from '@/services/diet.service';
 
-const findDiet = async (req: Express.Request, res: Express.Response) => {
-  const { id } = req.params;
+const findDiet = async (req: Request, res: Express.Response) => {
+  const { user } = req;
 
-  try {
-    const diets = await findDietService(id);
-
-    if (!diets?.diet) {
-      return res.status(204).send();
-    }
-
-    res.status(200).send({
-      diet: diets?.diet
-    });
-  } catch (error) {
-    const err = error as Error;
-    res.status(500).send({ message: err.message });
+  if (!user?.diet) {
+    return res.status(204).send();
   }
+
+  res.status(200).send({
+    diet: user.diet
+  });
 };
 
-const addDiet = async (req: Express.Request, res: Express.Response) => {
-  const { id } = req.params;
+const addDiet = async (req: Request, res: Express.Response) => {
+  const { id, diet: userDiets } = req.user!;
   const { diet } = req.body;
 
   try {
-    const oldUserDiet = (await findDietService(id))?.diet || {};
+    const oldUserDiet = userDiets || {};
     const dietId = new Types.ObjectId().toString();
 
-    const userDiet = await addDietService(id, diet, dietId, oldUserDiet);
+    const userDiet = await addDietService(id!, diet, dietId, oldUserDiet);
 
     return res.status(201).send({
       message: 'Diet created successfully',
-      diet: userDiet.diet
+      diet: userDiet.diet![dietId]
     });
   } catch (error) {
     const err = error as Error;
