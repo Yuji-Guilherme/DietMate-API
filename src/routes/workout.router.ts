@@ -16,30 +16,16 @@ import {
 
 const workoutRouter = Router();
 
-workoutRouter.get('', authMiddleware, userWorkoutExist, findAllWorkout);
-workoutRouter.delete('', authMiddleware, userWorkoutExist, deleteAllWorkout);
-workoutRouter.post('', validWorkout, authMiddleware, addWorkout);
-workoutRouter.get(
-  '/:id',
-  validId,
-  authMiddleware,
-  userWorkoutExist,
-  findOneWorkout
-);
-workoutRouter.patch(
-  '/:id',
-  validId,
-  validWorkout,
-  authMiddleware,
-  userWorkoutExist,
-  updateWorkout
-);
-workoutRouter.delete(
-  '/:id',
-  validId,
-  authMiddleware,
-  userWorkoutExist,
-  deleteOneWorkout
-);
+workoutRouter.use(authMiddleware);
+workoutRouter.post('', validWorkout, addWorkout);
+
+workoutRouter.use(userWorkoutExist);
+workoutRouter.get('', findAllWorkout);
+workoutRouter.delete('', deleteAllWorkout);
+
+workoutRouter.use(validId);
+workoutRouter.get('/:id', findOneWorkout);
+workoutRouter.patch('/:id', validWorkout, updateWorkout);
+workoutRouter.delete('/:id', deleteOneWorkout);
 
 export { workoutRouter };

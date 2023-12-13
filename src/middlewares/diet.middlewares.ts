@@ -1,5 +1,7 @@
 import type Express from 'express';
 import { UserFood, Request } from '@/types';
+import { ApiError } from '@/helpers/api-errors';
+import { foodChecker, removeBar } from '@/functions';
 
 const validDiet = (
   req: Express.Request,
@@ -9,16 +11,12 @@ const validDiet = (
   const { diet } = req.body;
   const dietArr: [UserFood] = diet.content;
 
-  if (!diet) return res.status(400).send({ message: 'Submit a diet' });
+  if (!diet) throw new ApiError('Submit a diet', 400);
 
-  if (!diet.title)
-    return res.status(400).send({ message: 'Submit a title for diet' });
+  if (!diet.title) throw new ApiError('Submit a title for diet', 400);
 
-  const checker = (item: UserFood) =>
-    item._id && item.number && item.description && item.grams;
-
-  if (!dietArr.every(checker))
-    return res.status(400).send({ message: 'Submit a valid food' });
+  if (!dietArr.every(foodChecker))
+    throw new ApiError('Submit a valid food', 400);
 
   next();
 };
@@ -28,15 +26,13 @@ const userDietExist = (
   res: Express.Response,
   next: Express.NextFunction
 ) => {
-  const { id } = req.params;
+  const id = req.params.id || removeBar(req.path);
   const { user } = req;
 
-  if (!user?.diet || Object.keys(user.diet).length === 0) {
+  if (!user?.diet || Object.keys(user.diet).length === 0)
     return res.status(204).send();
-  }
 
-  if (id && !user.diet[id])
-    return res.status(404).send({ message: 'Diet not found' });
+  if (id && !user.diet[id]) throw new ApiError('Diet not found', 404);
 
   next();
 };

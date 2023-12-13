@@ -25,7 +25,8 @@
         "no-console": "off",
         "@typescript-eslint/naming-convention": "off",
         "consistent-return": "off",
-        "no-underscore-dangle": "off"
+        "no-underscore-dangle": "off",
+        "prefer-regex-literals": "off"
     },
     "settings": {
         "import/parsers": {

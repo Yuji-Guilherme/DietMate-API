@@ -15,20 +15,37 @@ const findAllWorkout = async (req: Request, res: Express.Response) => {
   });
 };
 
-const deleteAllWorkout = async (req: Request, res: Express.Response) => {
+const deleteAllWorkout = async (
+  req: Request,
+  res: Express.Response,
+  next: Express.NextFunction
+) => {
   const { id } = req.user!;
-  const result = await deleteAllWorkoutService(id!);
 
-  res.status(200).send(result);
+  try {
+    const result = await deleteAllWorkoutService(id!);
+
+    res.status(200).send(result);
+  } catch (e) {
+    next(e);
+  }
 };
 
-const addWorkout = async (req: Request, res: Express.Response) => {
+const addWorkout = async (
+  req: Request,
+  res: Express.Response,
+  next: Express.NextFunction
+) => {
   const { id, workout: userWorkouts } = req.user!;
   const { workout } = req.body;
 
-  const result = await addWorkoutService(id!, workout, userWorkouts);
+  try {
+    const result = await addWorkoutService(id!, workout, userWorkouts);
 
-  return res.status(201).send(result);
+    return res.status(201).send(result);
+  } catch (e) {
+    next(e);
+  }
 };
 
 const findOneWorkout = async (req: Request, res: Express.Response) => {
@@ -40,23 +57,44 @@ const findOneWorkout = async (req: Request, res: Express.Response) => {
   });
 };
 
-const updateWorkout = async (req: Request, res: Express.Response) => {
+const updateWorkout = async (
+  req: Request,
+  res: Express.Response,
+  next: Express.NextFunction
+) => {
   const { id } = req.params;
   const { workout } = req.body;
   const { id: userId, workout: userWorkout } = req.user!;
 
-  const result = await updateWorkoutService(id, userId!, workout, userWorkout!);
+  try {
+    const result = await updateWorkoutService(
+      id,
+      userId!,
+      workout,
+      userWorkout!
+    );
 
-  res.status(200).send(result);
+    res.status(200).send(result);
+  } catch (e) {
+    next(e);
+  }
 };
 
-const deleteOneWorkout = async (req: Request, res: Express.Response) => {
+const deleteOneWorkout = async (
+  req: Request,
+  res: Express.Response,
+  next: Express.NextFunction
+) => {
   const { id } = req.params;
   const { id: userId, workout: userWorkout } = req.user!;
 
-  const result = await deleteOneWorkoutService(id, userId!, userWorkout!);
+  try {
+    const result = await deleteOneWorkoutService(id, userId!, userWorkout!);
 
-  res.status(200).send(result);
+    res.status(200).send(result);
+  } catch (e) {
+    next(e);
+  }
 };
 
 export {

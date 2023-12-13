@@ -15,20 +15,37 @@ const findAllDiet = async (req: Request, res: Express.Response) => {
   });
 };
 
-const deleteAllDiet = async (req: Request, res: Express.Response) => {
+const deleteAllDiet = async (
+  req: Request,
+  res: Express.Response,
+  next: Express.NextFunction
+) => {
   const { id } = req.user!;
-  const result = await deleteAllDietService(id!);
 
-  res.status(200).send(result);
+  try {
+    const result = await deleteAllDietService(id!);
+
+    res.status(200).send(result);
+  } catch (e) {
+    next(e);
+  }
 };
 
-const addDiet = async (req: Request, res: Express.Response) => {
+const addDiet = async (
+  req: Request,
+  res: Express.Response,
+  next: Express.NextFunction
+) => {
   const { id, diet: userDiets } = req.user!;
   const { diet } = req.body;
 
-  const result = await addDietService(id!, diet, userDiets);
+  try {
+    const result = await addDietService(id!, diet, userDiets);
 
-  return res.status(201).send(result);
+    return res.status(201).send(result);
+  } catch (e) {
+    next(e);
+  }
 };
 
 const findOneDiet = async (req: Request, res: Express.Response) => {
@@ -40,23 +57,39 @@ const findOneDiet = async (req: Request, res: Express.Response) => {
   });
 };
 
-const updateDiet = async (req: Request, res: Express.Response) => {
+const updateDiet = async (
+  req: Request,
+  res: Express.Response,
+  next: Express.NextFunction
+) => {
   const { id } = req.params;
   const { diet } = req.body;
   const { id: userId, diet: userDiet } = req.user!;
 
-  const result = await updateDietService(id, userId!, diet, userDiet);
+  try {
+    const result = await updateDietService(id, userId!, diet, userDiet);
 
-  res.status(200).send(result);
+    res.status(200).send(result);
+  } catch (e) {
+    next(e);
+  }
 };
 
-const deleteOneDiet = async (req: Request, res: Express.Response) => {
+const deleteOneDiet = async (
+  req: Request,
+  res: Express.Response,
+  next: Express.NextFunction
+) => {
   const { id } = req.params;
   const { id: userId, diet: userDiet } = req.user!;
 
-  const result = await deleteOneDietService(id, userId!, userDiet!);
+  try {
+    const result = await deleteOneDietService(id, userId!, userDiet!);
 
-  res.status(200).send(result);
+    res.status(200).send(result);
+  } catch (e) {
+    next(e);
+  }
 };
 
 export {

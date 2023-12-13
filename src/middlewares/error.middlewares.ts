@@ -1,4 +1,4 @@
-import { ApiError } from '@/helpers/api-errors';
+import type { ApiError } from '@/helpers/api-errors';
 import Express from 'express';
 
 const errorMiddleware = (
@@ -8,7 +8,7 @@ const errorMiddleware = (
 ) => {
   const status = error.statusCode ?? 500;
   const message = error.message ?? 'Internal Server Error';
-  res.status(status).send({ message });
+  return res.status(status).send({ message });
 };
 
 export { errorMiddleware };

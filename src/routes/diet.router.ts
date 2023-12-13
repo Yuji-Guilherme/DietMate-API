@@ -13,24 +13,16 @@ import {
 
 const dietRouter = Router();
 
-dietRouter.get('', authMiddleware, userDietExist, findAllDiet);
-dietRouter.delete('', authMiddleware, userDietExist, deleteAllDiet);
-dietRouter.post('', validDiet, authMiddleware, addDiet);
-dietRouter.get('/:id', validId, authMiddleware, userDietExist, findOneDiet);
-dietRouter.patch(
-  '/:id',
-  validId,
-  validDiet,
-  authMiddleware,
-  userDietExist,
-  updateDiet
-);
-dietRouter.delete(
-  '/:id',
-  validId,
-  authMiddleware,
-  userDietExist,
-  deleteOneDiet
-);
+dietRouter.use(authMiddleware);
+dietRouter.post('', validDiet, addDiet);
+
+dietRouter.use(userDietExist);
+dietRouter.get('', findAllDiet);
+dietRouter.delete('', deleteAllDiet);
+
+dietRouter.use(validId);
+dietRouter.get('/:id', findOneDiet);
+dietRouter.patch('/:id', validDiet, updateDiet);
+dietRouter.delete('/:id', deleteOneDiet);
 
 export { dietRouter };

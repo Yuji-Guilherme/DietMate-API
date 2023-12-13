@@ -10,8 +10,10 @@ import { authMiddleware } from '@/middlewares/auth.middlewares';
 const userRouter = Router();
 
 userRouter.post('', createUser);
-userRouter.get('', authMiddleware, findUser);
-userRouter.patch('', authMiddleware, updateUser);
-userRouter.delete('', authMiddleware, deleteUser);
+
+userRouter.use(authMiddleware);
+userRouter.get('', findUser);
+userRouter.patch('', updateUser);
+userRouter.delete('', deleteUser);
 
 export { userRouter };

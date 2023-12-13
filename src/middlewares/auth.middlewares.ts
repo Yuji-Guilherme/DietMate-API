@@ -2,6 +2,7 @@ import type Express from 'express';
 import { JwtPayload, verify } from 'jsonwebtoken';
 import type { Request } from '@/types';
 import { findUserRepository } from '@/repositories/user.repositories';
+import { ApiError } from '@/helpers/api-errors';
 
 const authMiddleware = (
   req: Request,
@@ -10,29 +11,28 @@ const authMiddleware = (
 ) => {
   const { authorization } = req.headers;
 
+  if (!authorization) throw new ApiError('Unauthorized', 401);
+
+  const [bearer, token] = authorization.split(' ');
+
+  if (!bearer || !token || bearer !== 'Bearer')
+    throw new ApiError('Unauthorized', 401);
+
   try {
-    if (!authorization) return res.status(401).send();
-
-    const [bearer, token] = authorization.split(' ');
-
-    if (!bearer || !token || bearer !== 'Bearer') return res.status(401).send();
-
     verify(token, `${process.env.SECRET_KEY}`, async (error, decoded) => {
-      if (error) return res.status(401).send({ message: 'Invalid token' });
+      if (error) throw new ApiError('Invalid token', 401);
 
       const { id } = decoded as JwtPayload;
       const user = await findUserRepository(id);
 
-      if (!user || !user.id)
-        return res.status(401).send({ message: 'Invalid token' });
+      if (!user || !user.id) throw new ApiError('Invalid token', 401);
 
       req.user = user;
 
       return next();
     });
-  } catch (error) {
-    const err = error as Error;
-    res.status(500).send({ message: err.message });
+  } catch (e) {
+    next(e);
   }
 };
 

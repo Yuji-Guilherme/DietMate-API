@@ -1,4 +1,5 @@
 import type Express from 'express';
+import { ApiError } from '@/helpers/api-errors';
 import { isValidObjectId } from 'mongoose';
 
 const validId = (
@@ -6,10 +7,9 @@ const validId = (
   res: Express.Response,
   next: Express.NextFunction
 ) => {
-  const { id } = req.params;
+  const id = req.params.id || req.path.replace(RegExp('/', 'g'), '');
 
-  if (!isValidObjectId(id))
-    return res.status(400).send({ message: 'Invalid ID' });
+  if (!isValidObjectId(id)) throw new ApiError('Invalid ID', 400);
 
   next();
 };
