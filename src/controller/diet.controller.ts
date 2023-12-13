@@ -1,5 +1,4 @@
 import type Express from 'express';
-import { Types } from 'mongoose';
 import type { Request } from '@/types';
 import {
   addDietService,
@@ -18,35 +17,18 @@ const findAllDiet = async (req: Request, res: Express.Response) => {
 
 const deleteAllDiet = async (req: Request, res: Express.Response) => {
   const { id } = req.user!;
+  const result = await deleteAllDietService(id!);
 
-  try {
-    await deleteAllDietService(id!);
-
-    res.status(200).send({ message: 'Diets successfully deleted' });
-  } catch (error) {
-    const err = error as Error;
-    return res.status(500).send({ message: err.message });
-  }
+  res.status(200).send(result);
 };
 
 const addDiet = async (req: Request, res: Express.Response) => {
   const { id, diet: userDiets } = req.user!;
   const { diet } = req.body;
 
-  const oldUserDiet = userDiets || {};
-  const dietId = new Types.ObjectId().toString();
+  const result = await addDietService(id!, diet, userDiets);
 
-  try {
-    const userDiet = await addDietService(id!, diet, dietId, oldUserDiet);
-
-    return res.status(201).send({
-      message: 'Diet created successfully',
-      diet: userDiet.diet![dietId]
-    });
-  } catch (error) {
-    const err = error as Error;
-    res.status(500).send({ message: err.message });
-  }
+  return res.status(201).send(result);
 };
 
 const findOneDiet = async (req: Request, res: Express.Response) => {
@@ -63,30 +45,18 @@ const updateDiet = async (req: Request, res: Express.Response) => {
   const { diet } = req.body;
   const { id: userId, diet: userDiet } = req.user!;
 
-  try {
-    await updateDietService(userId!, diet, id, userDiet!);
+  const result = await updateDietService(id, userId!, diet, userDiet);
 
-    res.status(200).send({ message: 'Diet successfully updated' });
-  } catch (error) {
-    const err = error as Error;
-    res.status(500).send({ message: err.message });
-  }
+  res.status(200).send(result);
 };
 
 const deleteOneDiet = async (req: Request, res: Express.Response) => {
   const { id } = req.params;
   const { id: userId, diet: userDiet } = req.user!;
 
-  delete userDiet![id];
+  const result = await deleteOneDietService(id, userId!, userDiet!);
 
-  try {
-    await deleteOneDietService(userId!, userDiet!);
-
-    res.status(200).send({ message: 'Diet successfully deleted' });
-  } catch (error) {
-    const err = error as Error;
-    res.status(500).send({ message: err.message });
-  }
+  res.status(200).send(result);
 };
 
 export {

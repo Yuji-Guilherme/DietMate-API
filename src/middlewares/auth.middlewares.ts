@@ -1,7 +1,7 @@
 import type Express from 'express';
 import { JwtPayload, verify } from 'jsonwebtoken';
 import type { Request } from '@/types';
-import { findUserService } from '@/services/user.service';
+import { findUserRepository } from '@/repositories/user.repositories';
 
 const authMiddleware = (
   req: Request,
@@ -21,7 +21,7 @@ const authMiddleware = (
       if (error) return res.status(401).send({ message: 'Invalid token' });
 
       const { id } = decoded as JwtPayload;
-      const user = await findUserService(id);
+      const user = await findUserRepository(id);
 
       if (!user || !user.id)
         return res.status(401).send({ message: 'Invalid token' });

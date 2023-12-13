@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { getAll } from '@/controller/exercise.controller';
+import { findAllExercise } from '@/controller/exercise.controller';
 
 const exerciseRouter = Router();
 
-exerciseRouter.get('', getAll);
+exerciseRouter.get('', findAllExercise);
 
 export { exerciseRouter };

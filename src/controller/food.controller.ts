@@ -1,19 +1,10 @@
+import { findAllFoodService } from '@/services/food.service';
 import type Express from 'express';
-import { getAllService } from '@/services/food.service';
 
-const getAll = async (_: Express.Request, res: Express.Response) => {
-  try {
-    const foods = await getAllService();
+const findAllFood = async (_: Express.Request, res: Express.Response) => {
+  const result = await findAllFoodService();
 
-    if (foods?.length === 0) {
-      return res.status(404).send({ message: 'There are no foods' });
-    }
-
-    res.status(200).send(foods);
-  } catch (error) {
-    const err = error as Error;
-    res.status(500).send({ message: err.message });
-  }
+  res.status(200).send(result);
 };
 
-export { getAll };
+export { findAllFood };

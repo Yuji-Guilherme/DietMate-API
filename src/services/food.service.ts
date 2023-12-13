@@ -1,9 +1,12 @@
-import { model } from 'mongoose';
-import { FoodSchema } from '@/models';
-import type { Food } from '@/types';
+import { ApiError } from '@/helpers/api-errors';
+import { findAllFoodRepository } from '@/repositories/food.repositories';
 
-const collection = model('Foods', FoodSchema, 'Foods');
+const findAllFoodService = async () => {
+  const foods = await findAllFoodRepository();
 
-const getAllService = async () => collection?.find<Food>().sort({ number: 1 });
+  if (foods?.length === 0) throw new ApiError('There are no foods', 404);
 
-export { getAllService };
+  return foods;
+};
+
+export { findAllFoodService };

@@ -1,11 +1,10 @@
 import type Express from 'express';
-import { Types } from 'mongoose';
 import type { Request } from '@/types';
 import {
   addWorkoutService,
   deleteAllWorkoutService,
-  updateWorkoutService,
-  deleteOneWorkoutService
+  deleteOneWorkoutService,
+  updateWorkoutService
 } from '@/services/workout.service';
 
 const findAllWorkout = async (req: Request, res: Express.Response) => {
@@ -18,40 +17,18 @@ const findAllWorkout = async (req: Request, res: Express.Response) => {
 
 const deleteAllWorkout = async (req: Request, res: Express.Response) => {
   const { id } = req.user!;
+  const result = await deleteAllWorkoutService(id!);
 
-  try {
-    await deleteAllWorkoutService(id!);
-
-    res.status(200).send({ message: 'Workouts successfully deleted' });
-  } catch (error) {
-    const err = error as Error;
-    return res.status(500).send({ message: err.message });
-  }
+  res.status(200).send(result);
 };
 
 const addWorkout = async (req: Request, res: Express.Response) => {
   const { id, workout: userWorkouts } = req.user!;
   const { workout } = req.body;
 
-  const oldUserWorkout = userWorkouts || {};
-  const workoutId = new Types.ObjectId().toString();
+  const result = await addWorkoutService(id!, workout, userWorkouts);
 
-  try {
-    const userWorkout = await addWorkoutService(
-      id!,
-      workout,
-      workoutId,
-      oldUserWorkout
-    );
-
-    return res.status(201).send({
-      message: 'Workout created successfully',
-      workout: userWorkout.workout![workoutId]
-    });
-  } catch (error) {
-    const err = error as Error;
-    res.status(500).send({ message: err.message });
-  }
+  return res.status(201).send(result);
 };
 
 const findOneWorkout = async (req: Request, res: Express.Response) => {
@@ -68,30 +45,18 @@ const updateWorkout = async (req: Request, res: Express.Response) => {
   const { workout } = req.body;
   const { id: userId, workout: userWorkout } = req.user!;
 
-  try {
-    await updateWorkoutService(userId!, workout, id, userWorkout!);
+  const result = await updateWorkoutService(id, userId!, workout, userWorkout!);
 
-    res.status(200).send({ message: 'Workout successfully updated' });
-  } catch (error) {
-    const err = error as Error;
-    res.status(500).send({ message: err.message });
-  }
+  res.status(200).send(result);
 };
 
 const deleteOneWorkout = async (req: Request, res: Express.Response) => {
   const { id } = req.params;
   const { id: userId, workout: userWorkout } = req.user!;
 
-  delete userWorkout![id];
+  const result = await deleteOneWorkoutService(id, userId!, userWorkout!);
 
-  try {
-    await deleteOneWorkoutService(userId!, userWorkout!);
-
-    res.status(200).send({ message: 'Workout successfully deleted' });
-  } catch (error) {
-    const err = error as Error;
-    res.status(500).send({ message: err.message });
-  }
+  res.status(200).send(result);
 };
 
 export {

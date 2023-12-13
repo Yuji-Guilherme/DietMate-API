@@ -1,10 +1,12 @@
-import { model } from 'mongoose';
-import { ExerciseSchema } from '@/models';
-import type { Exercise } from '@/types';
+import { ApiError } from '@/helpers/api-errors';
+import { findAllExerciseRepository } from '@/repositories/exercise.repositories';
 
-const collection = model('Exercises', ExerciseSchema, 'Exercises');
+const findAllExerciseService = async () => {
+  const exercises = await findAllExerciseRepository();
 
-const getAllService = async () =>
-  collection?.find<Exercise>().sort({ number: 1 });
+  if (exercises?.length === 0) throw new ApiError('There are no exercise', 404);
 
-export { getAllService };
+  return exercises;
+};
+
+export { findAllExerciseService };

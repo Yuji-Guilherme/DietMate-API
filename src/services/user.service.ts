@@ -1,24 +1,41 @@
-import { model, Types } from 'mongoose';
-import { UserSchema } from '@/models';
-import type { User } from '@/types';
+import { Types } from 'mongoose';
+import { User } from '@/types';
+import { ApiError } from '@/helpers/api-errors';
+import {
+  createUserRepository,
+  deleteUserRepository,
+  updateUserRepository
+} from '@/repositories/user.repositories';
 
-const collection = model('User', UserSchema, 'Users');
+const createUserService = async ({ username, password }: User) => {
+  if (!username || !password) throw new ApiError('Submit all fields', 400);
 
-const createUserService = async (body: User) => collection.create<User>(body);
+  const user = await createUserRepository({ username, password });
 
-const findUserService = async (id: string) => collection.findById(id);
+  if (!user) throw new ApiError('Error creating user', 400);
+
+  return {
+    message: 'User created successfully',
+    user: { username, id: user.id }
+  };
+};
 
 const updateUserService = async (
-  id: Types.ObjectId | string,
+  _id: string | Types.ObjectId,
   { username, password }: User
-) => collection.findOneAndUpdate({ _id: id }, { username, password });
+) => {
+  if (!username && !password)
+    throw new ApiError('Submit at least one field for update', 400);
 
-const deleteUserService = async (id: Types.ObjectId | string) =>
-  collection.deleteOne({ _id: id });
+  await updateUserRepository(_id, { username, password });
 
-export {
-  createUserService,
-  findUserService,
-  updateUserService,
-  deleteUserService
+  return { message: 'User successfully updated' };
 };
+
+const deleteUserService = async (id: string | Types.ObjectId) => {
+  await deleteUserRepository(id);
+
+  return { message: 'User successfully deleted' };
+};
+
+export { createUserService, updateUserService, deleteUserService };

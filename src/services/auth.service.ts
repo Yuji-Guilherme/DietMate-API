@@ -1,14 +1,25 @@
-import { model } from 'mongoose';
-import { sign } from 'jsonwebtoken';
-import { UserSchema } from '@/models';
+import { compare } from 'bcryptjs';
 import { User } from '@/types';
+import { ApiError } from '@/helpers/api-errors';
+import {
+  loginRepository,
+  generateToken
+} from '@/repositories/auth.repositories';
 
-const collection = model('User', UserSchema, 'Users');
+type LoginParameter = { username: Pick<User, 'username'>; password: string };
 
-const loginService = (username: Pick<User, 'username'>) =>
-  collection.findOne({ username }).select('+password');
+const loginService = async ({ username, password }: LoginParameter) => {
+  const user = await loginRepository(username);
 
-const generateToken = (id: string) =>
-  sign({ id }, `${process.env.SECRET_KEY}`, { expiresIn: 86400 });
+  if (!user) throw new ApiError('Incorrect user or password', 400);
 
-export { loginService, generateToken };
+  const isValidPassword = await compare(password, user!.password);
+
+  if (!isValidPassword) throw new ApiError('Incorrect user or password', 400);
+
+  const token = generateToken(user.id);
+
+  return token;
+};
+
+export { loginService };

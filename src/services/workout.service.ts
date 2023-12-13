@@ -1,53 +1,72 @@
-import { model } from 'mongoose';
-import { UserSchema } from '@/models';
+import { Types } from 'mongoose';
 import type { UserWorkout } from '@/types';
+import {
+  addWorkoutRepository,
+  deleteAllWorkoutRepository,
+  updateWorkoutRepository,
+  deleteOneWorkoutRepository
+} from '@/repositories/workout.repositories';
 
-const collection = model('User', UserSchema, 'Users');
+const deleteAllWorkoutService = async (id: string) => {
+  await deleteAllWorkoutRepository(id!);
+
+  return { message: 'Workouts successfully deleted' };
+};
 
 const addWorkoutService = async (
   id: string,
   workout: UserWorkout,
-  workoutId: string,
-  oldWorkout: { [key: string]: UserWorkout }
-) =>
-  collection.findByIdAndUpdate(
-    id,
-    { workout: { ...oldWorkout, [workoutId]: workout } },
-    { new: true, upsert: true, select: 'workout' }
+  userWorkouts?: {
+    [key: string]: UserWorkout;
+  }
+) => {
+  const oldUserWorkout = userWorkouts || {};
+  const workoutId = new Types.ObjectId().toString();
+
+  const userWorkout = await addWorkoutRepository(
+    id!,
+    workout,
+    workoutId,
+    oldUserWorkout
   );
 
-const deleteAllWorkoutService = async (id: string) =>
-  collection.findByIdAndUpdate(
-    id,
-    { workout: {} },
-    { upsert: true, select: 'workout' }
-  );
+  return {
+    message: 'Workout created successfully',
+    workout: userWorkout.workout![workoutId]
+  };
+};
 
 const updateWorkoutService = async (
   id: string,
-  newWorkout: UserWorkout,
-  workoutId: string,
-  oldWorkout: { [key: string]: UserWorkout }
-) =>
-  collection.findByIdAndUpdate(
-    id,
-    { workout: { ...oldWorkout, [workoutId]: newWorkout } },
-    { upsert: true, select: 'workout' }
-  );
+  userId: string,
+  workout: UserWorkout,
+  userWorkout?: {
+    [key: string]: UserWorkout;
+  }
+) => {
+  await updateWorkoutRepository(userId!, workout, id, userWorkout!);
+
+  return { message: 'Workout successfully updated' };
+};
 
 const deleteOneWorkoutService = async (
   id: string,
-  newWorkout: { [key: string]: UserWorkout }
-) =>
-  collection.findByIdAndUpdate(
-    id,
-    { workout: { ...newWorkout } },
-    { upsert: true, select: 'workout' }
-  );
+  userId: string,
+  userWorkout: {
+    [key: string]: UserWorkout;
+  }
+) => {
+  const newUserWorkout = userWorkout;
+  delete newUserWorkout![id];
+
+  await deleteOneWorkoutRepository(userId!, newUserWorkout);
+
+  return { message: 'Workout successfully deleted' };
+};
 
 export {
-  addWorkoutService,
   deleteAllWorkoutService,
+  addWorkoutService,
   updateWorkoutService,
   deleteOneWorkoutService
 };

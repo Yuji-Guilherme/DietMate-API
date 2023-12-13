@@ -1,53 +1,61 @@
-import { model } from 'mongoose';
-import { UserSchema } from '@/models';
+import { Types } from 'mongoose';
 import type { UserDiet } from '@/types';
+import {
+  addDietRepository,
+  deleteAllDietRepository,
+  updateDietRepository,
+  deleteOneDietRepository
+} from '@/repositories/diet.repositories';
 
-const collection = model('User', UserSchema, 'Users');
+const deleteAllDietService = async (id: string) => {
+  await deleteAllDietRepository(id!);
+
+  return { message: 'Diets successfully deleted' };
+};
 
 const addDietService = async (
   id: string,
   diet: UserDiet,
-  dietId: string,
-  oldDiets: { [key: string]: UserDiet }
-) =>
-  collection.findByIdAndUpdate(
-    id,
-    { diet: { ...oldDiets, [dietId]: diet } },
-    { new: true, upsert: true, select: 'diet' }
-  );
+  userDiets?: { [key: string]: UserDiet }
+) => {
+  const oldUserDiets = userDiets || {};
+  const dietId = new Types.ObjectId().toString();
 
-const deleteAllDietService = async (id: string) =>
-  collection.findByIdAndUpdate(
-    id,
-    { diet: {} },
-    { upsert: true, select: 'diet' }
-  );
+  const newUserDiets = await addDietRepository(id!, diet, dietId, oldUserDiets);
+
+  return {
+    message: 'Diet created successfully',
+    diet: newUserDiets.diet![dietId]
+  };
+};
 
 const updateDietService = async (
   id: string,
-  newDiet: UserDiet,
-  dietId: string,
-  oldDiets: { [key: string]: UserDiet }
-) =>
-  collection.findByIdAndUpdate(
-    id,
-    { diet: { ...oldDiets, [dietId]: newDiet } },
-    { upsert: true, select: 'diet' }
-  );
+  userId: string,
+  diet: UserDiet,
+  userDiets?: { [key: string]: UserDiet }
+) => {
+  await updateDietRepository(userId!, diet, id, userDiets!);
+
+  return { message: 'Diet successfully updated' };
+};
 
 const deleteOneDietService = async (
   id: string,
-  newDiet: { [key: string]: UserDiet }
-) =>
-  collection.findByIdAndUpdate(
-    id,
-    { diet: { ...newDiet } },
-    { upsert: true, select: 'diet' }
-  );
+  userId: string,
+  userDiet: { [key: string]: UserDiet }
+) => {
+  const newUserDiet = userDiet;
+  delete newUserDiet![id];
+
+  await deleteOneDietRepository(userId!, newUserDiet!);
+
+  return { message: 'Diet successfully deleted' };
+};
 
 export {
-  addDietService,
   deleteAllDietService,
+  addDietService,
   updateDietService,
   deleteOneDietService
 };
