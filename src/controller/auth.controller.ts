@@ -11,7 +11,8 @@ const login = async (
   try {
     const token = await loginService({ username, password });
 
-    res.status(200).send({ token });
+    res.cookie('token', token, { httpOnly: true, maxAge: 7 * 86400 });
+    res.status(200).send({ message: 'User logged in successfully' });
   } catch (e) {
     next(e);
   }
