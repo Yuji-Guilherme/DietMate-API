@@ -1,4 +1,5 @@
 import type Express from 'express';
+import { cookieAccessTokenConfig } from '@/constants/token';
 import { loginService } from '@/services/auth.service';
 
 const login = async (
@@ -11,7 +12,7 @@ const login = async (
   try {
     const token = await loginService({ username, password });
 
-    res.cookie('token', token, { httpOnly: true, maxAge: 7 * 86400 });
+    res.cookie('token', token, cookieAccessTokenConfig);
     res.status(200).send({ message: 'User logged in successfully' });
   } catch (e) {
     next(e);
