@@ -1,10 +1,12 @@
-class ApiError extends Error {
-  public readonly statusCode: number;
+type ApiErrorParameters = { message: string; status: number };
 
-  constructor(message: string, statusCode: number) {
+class ApiError extends Error {
+  public readonly status: number;
+
+  constructor({ message, status }: ApiErrorParameters) {
     super(message);
-    this.statusCode = statusCode;
+    this.status = status;
   }
 }
 
-export { ApiError };
+export { ApiError, ApiErrorParameters };

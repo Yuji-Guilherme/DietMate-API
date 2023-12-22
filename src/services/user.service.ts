@@ -1,6 +1,7 @@
-import { Types } from 'mongoose';
-import { User } from '@/types';
+import type { Types } from 'mongoose';
+import type { User } from '@/types';
 import { ApiError } from '@/helpers/api-errors';
+import { userError } from '@/constants/errors';
 import {
   createUserRepository,
   deleteUserRepository,
@@ -8,11 +9,11 @@ import {
 } from '@/repositories/user.repositories';
 
 const createUserService = async ({ username, password }: User) => {
-  if (!username || !password) throw new ApiError('Submit all fields', 400);
+  if (!username || !password) throw new ApiError(userError.submitAllFields);
 
   const user = await createUserRepository({ username, password });
 
-  if (!user) throw new ApiError('Error creating user', 400);
+  if (!user) throw new ApiError(userError.createUser);
 
   return {
     message: 'User created successfully',
@@ -25,7 +26,7 @@ const updateUserService = async (
   { username, password }: User
 ) => {
   if (!username && !password)
-    throw new ApiError('Submit at least one field for update', 400);
+    throw new ApiError(userError.submitOneFieldToUpdate);
 
   await updateUserRepository(_id, { username, password });
 

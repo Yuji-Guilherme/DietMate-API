@@ -1,5 +1,6 @@
 import type Express from 'express';
-import { UserExercise, Request } from '@/types';
+import type { UserExercise, Request } from '@/types';
+import { workoutError } from '@/constants/errors';
 import { ApiError } from '@/helpers/api-errors';
 import { exerciseChecker, removeBar } from '@/utils';
 
@@ -11,12 +12,12 @@ const validWorkout = (
   const { workout } = req.body;
   const workoutArr: [UserExercise] = workout.content;
 
-  if (!workout) throw new ApiError('Submit a workout', 400);
+  if (!workout) throw new ApiError(workoutError.submit);
 
-  if (!workout.title) throw new ApiError('Submit a title for workout', 400);
+  if (!workout.title) throw new ApiError(workoutError.submitTitle);
 
   if (!workoutArr.every(exerciseChecker))
-    throw new ApiError('Submit a valid exercise', 400);
+    throw new ApiError(workoutError.invalidExercise);
 
   next();
 };
@@ -33,7 +34,7 @@ const userWorkoutExist = (
     return res.status(204).send();
   }
 
-  if (id && !user.workout[id]) throw new ApiError('Workout not found', 404);
+  if (id && !user.workout[id]) throw new ApiError(workoutError.notFound);
 
   next();
 };

@@ -6,7 +6,7 @@ const errorMiddleware = (
   req: Express.Request,
   res: Express.Response
 ) => {
-  const status = error.statusCode ?? 500;
+  const status = error.status ?? 500;
   const message = error.message ?? 'Internal Server Error';
   return res.status(status).send({ message });
 };

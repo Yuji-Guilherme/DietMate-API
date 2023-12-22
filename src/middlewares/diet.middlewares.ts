@@ -1,5 +1,6 @@
 import type Express from 'express';
-import { UserFood, Request } from '@/types';
+import type { UserFood, Request } from '@/types';
+import { dietError } from '@/constants/errors';
 import { ApiError } from '@/helpers/api-errors';
 import { foodChecker, removeBar } from '@/utils';
 
@@ -11,12 +12,11 @@ const validDiet = (
   const { diet } = req.body;
   const dietArr: [UserFood] = diet.content;
 
-  if (!diet) throw new ApiError('Submit a diet', 400);
+  if (!diet) throw new ApiError(dietError.submit);
 
-  if (!diet.title) throw new ApiError('Submit a title for diet', 400);
+  if (!diet.title) throw new ApiError(dietError.submitTitle);
 
-  if (!dietArr.every(foodChecker))
-    throw new ApiError('Submit a valid food', 400);
+  if (!dietArr.every(foodChecker)) throw new ApiError(dietError.invalidFood);
 
   next();
 };
@@ -32,7 +32,7 @@ const userDietExist = (
   if (!user?.diet || Object.keys(user.diet).length === 0)
     return res.status(204).send();
 
-  if (id && !user.diet[id]) throw new ApiError('Diet not found', 404);
+  if (id && !user.diet[id]) throw new ApiError(dietError.notFound);
 
   next();
 };

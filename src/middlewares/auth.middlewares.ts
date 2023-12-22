@@ -2,6 +2,7 @@ import type Express from 'express';
 import { JwtPayload, verify } from 'jsonwebtoken';
 
 import { tokenEnv } from '@/config';
+import { unauthorized, forbidden, authError } from '@/constants/errors';
 import type { Request } from '@/types';
 import { findUserRepository } from '@/repositories/user.repositories';
 import { ApiError } from '@/helpers/api-errors';
@@ -13,16 +14,16 @@ const authMiddleware = (
 ) => {
   const { token } = req.cookies;
 
-  if (!token) throw new ApiError('Unauthorized', 401);
+  if (!token) throw new ApiError(unauthorized);
 
   try {
     verify(`${token}`, `${tokenEnv.access}`, async (error, decoded) => {
-      if (error) throw new ApiError('Invalid token', 401);
+      if (error) throw new ApiError(authError.invalidToken);
 
       const { id } = decoded as JwtPayload;
       const user = await findUserRepository(id);
 
-      if (!user || !user.id) throw new ApiError('Forbidden', 403);
+      if (!user || !user.id) throw new ApiError(forbidden);
 
       req.user = user;
 
