@@ -1,5 +1,7 @@
 import type Express from 'express';
 import { JwtPayload, verify } from 'jsonwebtoken';
+
+import { tokenEnv } from '@/config';
 import type { Request } from '@/types';
 import { findUserRepository } from '@/repositories/user.repositories';
 import { ApiError } from '@/helpers/api-errors';
@@ -14,7 +16,7 @@ const authMiddleware = (
   if (!token) throw new ApiError('Unauthorized', 401);
 
   try {
-    verify(`${token}`, `${process.env.SECRET_KEY}`, async (error, decoded) => {
+    verify(`${token}`, `${tokenEnv.access}`, async (error, decoded) => {
       if (error) throw new ApiError('Invalid token', 401);
 
       const { id } = decoded as JwtPayload;
