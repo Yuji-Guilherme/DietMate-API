@@ -3,7 +3,7 @@ import { User } from '@/types';
 import { ApiError } from '@/helpers/api-errors';
 import {
   loginRepository,
-  generateToken
+  generateAccessToken
 } from '@/repositories/auth.repositories';
 
 type LoginParameter = { username: Pick<User, 'username'>; password: string };
@@ -17,7 +17,7 @@ const loginService = async ({ username, password }: LoginParameter) => {
 
   if (!isValidPassword) throw new ApiError('Incorrect user or password', 400);
 
-  const token = generateToken(user.id);
+  const token = generateAccessToken(user.id);
 
   return token;
 };

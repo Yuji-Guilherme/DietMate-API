@@ -8,7 +8,7 @@ const collection = model('User', UserSchema, 'Users');
 const loginRepository = (username: Pick<User, 'username'>) =>
   collection.findOne({ username }).select('+password');
 
-const generateToken = (id: string) =>
+const generateAccessToken = (id: string) =>
   sign({ id }, `${process.env.SECRET_KEY}`, { expiresIn: 86400 });
 
-export { loginRepository, generateToken };
+export { loginRepository, generateAccessToken };

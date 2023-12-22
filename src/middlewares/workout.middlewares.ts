@@ -1,7 +1,7 @@
 import type Express from 'express';
 import { UserExercise, Request } from '@/types';
 import { ApiError } from '@/helpers/api-errors';
-import { exerciseChecker, removeBar } from '@/functions';
+import { exerciseChecker, removeBar } from '@/utils';
 
 const validWorkout = (
   req: Express.Request,

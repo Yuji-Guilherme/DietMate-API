@@ -1,7 +1,7 @@
 import type Express from 'express';
 import { UserFood, Request } from '@/types';
 import { ApiError } from '@/helpers/api-errors';
-import { foodChecker, removeBar } from '@/functions';
+import { foodChecker, removeBar } from '@/utils';
 
 const validDiet = (
   req: Express.Request,
