@@ -4,7 +4,10 @@ const database = {
 };
 
 const tokenEnv = {
-  access: process.env.SECRET_ACCESS_JWT
+  access: process.env.SECRET_ACCESS_JWT,
+  refresh: process.env.SECRET_REFRESH_JWT
 };
 
-export { database, tokenEnv };
+const cookieSecret = process.env.COOKIE_SECRET;
+
+export { database, tokenEnv, cookieSecret };

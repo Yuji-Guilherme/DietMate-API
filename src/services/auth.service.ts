@@ -1,11 +1,15 @@
 import { compare } from 'bcryptjs';
+import { JwtPayload, verify } from 'jsonwebtoken';
 import type { User } from '@/types';
 import { ApiError } from '@/helpers/api-errors';
-import { authError } from '@/constants/errors';
+import { unauthorized, authError } from '@/constants/errors';
+import { tokenEnv } from '@/config';
 import {
   loginRepository,
-  generateAccessToken
+  generateAccessToken,
+  generateRefreshToken
 } from '@/repositories/auth.repositories';
+import { findUserRepository } from '@/repositories/user.repositories';
 
 type LoginParameter = { username: Pick<User, 'username'>; password: string };
 
@@ -18,9 +22,24 @@ const loginService = async ({ username, password }: LoginParameter) => {
 
   if (!isValidPassword) throw new ApiError(authError.incorrectUserOrPassword);
 
-  const token = generateAccessToken(user.id);
+  const accessToken = generateAccessToken(user.id);
+  const refreshToken = generateRefreshToken(user.id);
 
-  return token;
+  return { accessToken, refreshToken };
 };
 
-export { loginService };
+const refreshService = async (refreshToken: string) => {
+  if (!refreshToken) throw new ApiError(unauthorized);
+
+  const decoded = verify(refreshToken, `${tokenEnv.refresh}`) as JwtPayload;
+
+  const user = await findUserRepository(decoded.id);
+  if (!user || !user.id) throw new ApiError(authError.invalidToken);
+
+  const newAccessToken = generateAccessToken(decoded.id);
+  const newRefreshToken = generateRefreshToken(decoded.id);
+
+  return { newAccessToken, newRefreshToken };
+};
+
+export { loginService, refreshService };
