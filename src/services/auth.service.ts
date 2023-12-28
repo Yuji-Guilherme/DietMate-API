@@ -1,15 +1,15 @@
 import { compare } from 'bcryptjs';
-import { JwtPayload, verify } from 'jsonwebtoken';
 import type { User } from '@/types';
 import { ApiError } from '@/helpers/api-errors';
-import { unauthorized, authError } from '@/constants/errors';
-import { tokenEnv } from '@/config';
+import { authError, forbidden } from '@/constants/errors';
 import {
   loginRepository,
+  addRefreshTokenRepository,
+  deleteRefreshTokenRepository,
+  updateRefreshTokenRepository,
   generateAccessToken,
   generateRefreshToken
 } from '@/repositories/auth.repositories';
-import { findUserRepository } from '@/repositories/user.repositories';
 
 type LoginParameter = { username: Pick<User, 'username'>; password: string };
 
@@ -25,21 +25,32 @@ const loginService = async ({ username, password }: LoginParameter) => {
   const accessToken = generateAccessToken(user.id);
   const refreshToken = generateRefreshToken(user.id);
 
+  await addRefreshTokenRepository(user.id, refreshToken);
+
   return { accessToken, refreshToken };
 };
 
-const refreshService = async (refreshToken: string) => {
-  if (!refreshToken) throw new ApiError(unauthorized);
+const logoutService = async (id: string) => {
+  const user = await deleteRefreshTokenRepository(id);
 
-  const decoded = verify(refreshToken, `${tokenEnv.refresh}`) as JwtPayload;
+  if (!user) throw new ApiError(forbidden);
 
-  const user = await findUserRepository(decoded.id);
-  if (!user || !user.id) throw new ApiError(authError.invalidToken);
+  return { message: 'Logout Success' };
+};
 
-  const newAccessToken = generateAccessToken(decoded.id);
-  const newRefreshToken = generateRefreshToken(decoded.id);
+const refreshService = async (id: string, refreshToken: string) => {
+  const newAccessToken = generateAccessToken(id);
+  const newRefreshToken = generateRefreshToken(id);
+
+  const user = await updateRefreshTokenRepository(
+    id,
+    refreshToken,
+    newRefreshToken
+  );
+
+  if (!user || !user.token) throw new ApiError(forbidden);
 
   return { newAccessToken, newRefreshToken };
 };
 
-export { loginService, refreshService };
+export { loginService, logoutService, refreshService };

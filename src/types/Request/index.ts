@@ -7,8 +7,12 @@ interface UserWithId extends User {
   id?: string;
 }
 
-interface Request extends Express.Request {
+interface RequestWithUser extends Express.Request {
   user?: UserWithId;
 }
 
-export { Request };
+interface RequestWithId extends Express.Request {
+  id?: string;
+}
+
+export { RequestWithUser, RequestWithId };

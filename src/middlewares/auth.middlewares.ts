@@ -3,12 +3,12 @@ import { JwtPayload, verify } from 'jsonwebtoken';
 
 import { tokenEnv } from '@/config';
 import { unauthorized, forbidden, authError } from '@/constants/errors';
-import type { Request } from '@/types';
+import type { RequestWithUser, RequestWithId } from '@/types';
 import { findUserRepository } from '@/repositories/user.repositories';
 import { ApiError } from '@/helpers/api-errors';
 
 const authMiddleware = (
-  req: Request,
+  req: RequestWithUser,
   res: Express.Response,
   next: Express.NextFunction
 ) => {
@@ -34,4 +34,30 @@ const authMiddleware = (
   }
 };
 
-export { authMiddleware };
+const validRefreshToken = (
+  req: RequestWithId,
+  res: Express.Response,
+  next: Express.NextFunction
+) => {
+  const refreshToken = req.signedCookies.refresh;
+
+  if (!refreshToken) throw new ApiError(unauthorized);
+
+  try {
+    verify(`${refreshToken}`, `${tokenEnv.refresh}`, async (error, decoded) => {
+      if (error) throw new ApiError(authError.invalidToken);
+
+      const { id } = decoded as JwtPayload;
+
+      if (!id) throw new ApiError(authError.invalidToken);
+
+      req.id = id;
+
+      return next();
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
+export { authMiddleware, validRefreshToken };

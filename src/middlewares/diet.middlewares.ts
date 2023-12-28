@@ -1,5 +1,5 @@
 import type Express from 'express';
-import type { UserFood, Request } from '@/types';
+import type { UserFood, RequestWithUser } from '@/types';
 import { dietError } from '@/constants/errors';
 import { ApiError } from '@/helpers/api-errors';
 import { foodChecker, removeBar } from '@/utils';
@@ -22,7 +22,7 @@ const validDiet = (
 };
 
 const userDietExist = (
-  req: Request,
+  req: RequestWithUser,
   res: Express.Response,
   next: Express.NextFunction
 ) => {

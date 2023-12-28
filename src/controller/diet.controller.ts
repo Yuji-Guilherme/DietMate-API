@@ -1,5 +1,5 @@
 import type Express from 'express';
-import type { Request } from '@/types';
+import type { RequestWithUser } from '@/types';
 import {
   addDietService,
   deleteAllDietService,
@@ -7,7 +7,7 @@ import {
   deleteOneDietService
 } from '@/services/diet.service';
 
-const findAllDiet = async (req: Request, res: Express.Response) => {
+const findAllDiet = async (req: RequestWithUser, res: Express.Response) => {
   const { user } = req;
 
   res.status(200).send({
@@ -16,7 +16,7 @@ const findAllDiet = async (req: Request, res: Express.Response) => {
 };
 
 const deleteAllDiet = async (
-  req: Request,
+  req: RequestWithUser,
   res: Express.Response,
   next: Express.NextFunction
 ) => {
@@ -32,7 +32,7 @@ const deleteAllDiet = async (
 };
 
 const addDiet = async (
-  req: Request,
+  req: RequestWithUser,
   res: Express.Response,
   next: Express.NextFunction
 ) => {
@@ -48,7 +48,7 @@ const addDiet = async (
   }
 };
 
-const findOneDiet = async (req: Request, res: Express.Response) => {
+const findOneDiet = async (req: RequestWithUser, res: Express.Response) => {
   const { id } = req.params;
   const { user } = req;
 
@@ -58,7 +58,7 @@ const findOneDiet = async (req: Request, res: Express.Response) => {
 };
 
 const updateDiet = async (
-  req: Request,
+  req: RequestWithUser,
   res: Express.Response,
   next: Express.NextFunction
 ) => {
@@ -76,7 +76,7 @@ const updateDiet = async (
 };
 
 const deleteOneDiet = async (
-  req: Request,
+  req: RequestWithUser,
   res: Express.Response,
   next: Express.NextFunction
 ) => {

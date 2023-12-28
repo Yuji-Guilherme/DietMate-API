@@ -1,5 +1,5 @@
 import type Express from 'express';
-import { User, Request } from '@/types';
+import { User, RequestWithUser } from '@/types';
 import {
   createUserService,
   updateUserService,
@@ -22,13 +22,13 @@ const createUser = async (
   }
 };
 
-const findUser = (req: Request, res: Express.Response) => {
+const findUser = (req: RequestWithUser, res: Express.Response) => {
   const { user } = req;
   return res.status(200).send({ user });
 };
 
 const updateUser = async (
-  req: Request,
+  req: RequestWithUser,
   res: Express.Response,
   next: Express.NextFunction
 ) => {
@@ -45,7 +45,7 @@ const updateUser = async (
 };
 
 const deleteUser = async (
-  req: Request,
+  req: RequestWithUser,
   res: Express.Response,
   next: Express.NextFunction
 ) => {

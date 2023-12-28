@@ -1,5 +1,5 @@
 import type Express from 'express';
-import type { Request } from '@/types';
+import type { RequestWithUser } from '@/types';
 import {
   addWorkoutService,
   deleteAllWorkoutService,
@@ -7,7 +7,7 @@ import {
   updateWorkoutService
 } from '@/services/workout.service';
 
-const findAllWorkout = async (req: Request, res: Express.Response) => {
+const findAllWorkout = async (req: RequestWithUser, res: Express.Response) => {
   const { user } = req;
 
   res.status(200).send({
@@ -16,7 +16,7 @@ const findAllWorkout = async (req: Request, res: Express.Response) => {
 };
 
 const deleteAllWorkout = async (
-  req: Request,
+  req: RequestWithUser,
   res: Express.Response,
   next: Express.NextFunction
 ) => {
@@ -32,7 +32,7 @@ const deleteAllWorkout = async (
 };
 
 const addWorkout = async (
-  req: Request,
+  req: RequestWithUser,
   res: Express.Response,
   next: Express.NextFunction
 ) => {
@@ -48,7 +48,7 @@ const addWorkout = async (
   }
 };
 
-const findOneWorkout = async (req: Request, res: Express.Response) => {
+const findOneWorkout = async (req: RequestWithUser, res: Express.Response) => {
   const { id } = req.params;
   const { user } = req;
 
@@ -58,7 +58,7 @@ const findOneWorkout = async (req: Request, res: Express.Response) => {
 };
 
 const updateWorkout = async (
-  req: Request,
+  req: RequestWithUser,
   res: Express.Response,
   next: Express.NextFunction
 ) => {
@@ -81,7 +81,7 @@ const updateWorkout = async (
 };
 
 const deleteOneWorkout = async (
-  req: Request,
+  req: RequestWithUser,
   res: Express.Response,
   next: Express.NextFunction
 ) => {

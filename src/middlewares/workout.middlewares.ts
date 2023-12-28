@@ -1,5 +1,5 @@
 import type Express from 'express';
-import type { UserExercise, Request } from '@/types';
+import type { UserExercise, RequestWithUser } from '@/types';
 import { workoutError } from '@/constants/errors';
 import { ApiError } from '@/helpers/api-errors';
 import { exerciseChecker, removeBar } from '@/utils';
@@ -23,7 +23,7 @@ const validWorkout = (
 };
 
 const userWorkoutExist = (
-  req: Request,
+  req: RequestWithUser,
   res: Express.Response,
   next: Express.NextFunction
 ) => {

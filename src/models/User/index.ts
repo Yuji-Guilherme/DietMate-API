@@ -6,6 +6,7 @@ import { ExerciseSchema } from '../Exercise';
 
 interface IUserSchema extends User {
   _id: Types.ObjectId;
+  token: string;
 }
 
 const UserFoodContent = new Schema()
@@ -46,7 +47,8 @@ const UserSchema = new Schema<IUserSchema>(
       trim: true
     },
     diet: { type: Object, of: { type: UserDietSchema } },
-    workout: { type: Object, of: { type: UserWorkoutSchema } }
+    workout: { type: Object, of: { type: UserWorkoutSchema } },
+    token: { type: String }
   },
   { collection: 'Users' }
 );

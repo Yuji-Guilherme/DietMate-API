@@ -1,4 +1,4 @@
-import type { Request } from './Request';
+import type { RequestWithUser, RequestWithId } from './Request';
 import type { Food } from './Food';
 import type { Exercise } from './Exercise';
 import type {
@@ -12,7 +12,8 @@ import type {
 export type {
   Food,
   Exercise,
-  Request,
+  RequestWithUser,
+  RequestWithId,
   User,
   UserFood,
   UserExercise,
