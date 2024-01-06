@@ -24,6 +24,7 @@ const exerciseError: Record<string, ApiErrorParameters> = {
 };
 
 const authError: Record<string, ApiErrorParameters> = {
+  userLogged: { message: 'User is already logged', status: 401 },
   invalidToken: { message: 'Invalid Token', status: 401 },
   incorrectUserOrPassword: {
     message: 'Incorrect user or password',

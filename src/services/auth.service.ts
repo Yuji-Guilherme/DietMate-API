@@ -11,9 +11,19 @@ import {
   generateRefreshToken
 } from '@/repositories/auth.repositories';
 
-type LoginParameter = { username: Pick<User, 'username'>; password: string };
+type LoginParameter = {
+  username: Pick<User, 'username'>;
+  password: string;
+  oldRefreshToken?: string;
+};
 
-const loginService = async ({ username, password }: LoginParameter) => {
+const loginService = async ({
+  username,
+  password,
+  oldRefreshToken
+}: LoginParameter) => {
+  if (oldRefreshToken) throw new ApiError(authError.userLogged);
+
   const user = await loginRepository(username);
 
   if (!user) throw new ApiError(authError.incorrectUserOrPassword);

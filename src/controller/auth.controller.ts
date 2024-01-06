@@ -16,11 +16,13 @@ const login = async (
   next: Express.NextFunction
 ) => {
   const { username, password } = req.body;
+  const oldRefreshToken = req.signedCookies.refresh;
 
   try {
     const { accessToken, refreshToken } = await loginService({
       username,
-      password
+      password,
+      oldRefreshToken
     });
 
     res.cookie('token', accessToken, cookieAccessTokenConfig);
