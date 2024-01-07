@@ -111,5 +111,5 @@
     }
   },
   "exclude": ["node_modules", "dist", "tests", "vitest.config.ts"],
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "tests"]
 }

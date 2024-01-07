@@ -1,12 +1,27 @@
-import { describe, expect, it } from "vitest";
-import { testServer } from "../vitest.setup";
+import { afterAll, describe, expect, it } from 'vitest';
+import { deleteUserTest, testServer } from '../vitest.setup';
+import { userError } from '../../src/constants/errors';
 
 const userTest = {
-    username: 'John Doe',
+    username: 'Test1',
     password: 'test12345'
-}
+};
 
 describe('/user', () => {
+    it('should return an error if it does not have a username', async () => {
+        const result = await testServer.post('/user').send({password: userTest.password});
+
+        expect(result.statusCode).toEqual(userError.submitAllFields.status);
+        expect(result.text).toMatch(userError.submitAllFields.message);
+    });
+
+    it('should return an error if it does not have a password', async () => {
+        const result = await testServer.post('/user').send({username: userTest.username});
+
+        expect(result.statusCode).toEqual(userError.submitAllFields.status);
+        expect(result.text).toMatch(userError.submitAllFields.message);
+    });
+
     it('should create a user correctly', async () => {
         const result = await testServer.post('/user').send(userTest);
 
@@ -17,11 +32,7 @@ describe('/user', () => {
         expect(result.body.user).toHaveProperty('id');
     });
 
-    it('should delete a user correctly',  async () => {
-        const cookies = (await testServer.post('/auth').send(userTest)).header['set-cookie'];
-        const result = await testServer.delete('/user').set('Cookie', cookies);
-
-        expect(result.statusCode).toEqual(200);
-        expect(result.body).toHaveProperty('message', 'User successfully deleted');
+    afterAll(async () => {
+        await deleteUserTest(userTest);
     });
-})
+});
