@@ -1,5 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { createUserTest, deleteUserTest, getCookieTest, testServer } from '../vitest.setup';
+import { testServer } from '../vitest.setup';
+import { createUserTest, deleteUserTest, getCookieTest } from '../helpers';
 
 const userTest = {
     username: 'Test3',

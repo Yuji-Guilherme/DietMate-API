@@ -1,6 +1,8 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { createUserTest, deleteUserTest, getCookieTest, testServer } from '../vitest.setup';
-import { userError } from '../../src/constants/errors';
+import { testServer } from '../vitest.setup';
+import { createUserTest, deleteUserTest, getCookieTest } from '../helpers';
+// @ts-ignore
+import { userError } from '@/constants/errors';
 
 const userTest = {
     username: 'Test4',
