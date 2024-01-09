@@ -2,7 +2,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { createUserTest, deleteUserTest, getCookieTest, testServer } from '../helpers';
 
 const userTest = {
-    username: 'TestUser',
+    username: 'TestUser7',
     password: 'test12345'
 };
 

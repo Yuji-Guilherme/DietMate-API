@@ -4,7 +4,7 @@ import { createUserTest, deleteUserTest, testServer } from '../helpers';
 import { authError } from '@/constants/errors';
 
 const userTest = {
-    username: 'TestUser',
+    username: 'TestUser5',
     password: 'test12345'
 };
 
@@ -43,6 +43,7 @@ describe('/auth', () => {
 
         expect(result.statusCode).toEqual(200);
         expect(result.body).toHaveProperty('message', 'User logged in successfully');
+
         expect(cookies).not.toBeNull();
         expect(cookies).not.toBeUndefined();
         expect(cookies[0]).toMatch('token');

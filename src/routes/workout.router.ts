@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import { authMiddleware } from '@/middlewares/auth.middlewares';
-import { validId } from '@/middlewares/global.middlewares';
 import {
   validWorkout,
   userWorkoutExist
@@ -23,7 +22,6 @@ workoutRouter.use(userWorkoutExist);
 workoutRouter.get('', findAllWorkout);
 workoutRouter.delete('', deleteAllWorkout);
 
-workoutRouter.use(validId);
 workoutRouter.get('/:id', findOneWorkout);
 workoutRouter.patch('/:id', validWorkout, updateWorkout);
 workoutRouter.delete('/:id', deleteOneWorkout);

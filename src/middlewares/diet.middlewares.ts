@@ -1,6 +1,7 @@
 import type Express from 'express';
+import { isValidObjectId } from 'mongoose';
 import type { UserFood, RequestWithUser } from '@/types';
-import { dietError } from '@/constants/errors';
+import { dietError, invalidId } from '@/constants/errors';
 import { ApiError } from '@/helpers/api-errors';
 import { foodChecker, removeBar } from '@/utils';
 
@@ -31,6 +32,8 @@ const userDietExist = (
 
   if (!user?.diet || Object.keys(user.diet).length === 0)
     return res.status(204).send();
+
+  if (id && !isValidObjectId(id)) throw new ApiError(invalidId);
 
   if (id && !user.diet[id]) throw new ApiError(dietError.notFound);
 

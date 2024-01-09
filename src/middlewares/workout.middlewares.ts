@@ -1,6 +1,7 @@
 import type Express from 'express';
+import { isValidObjectId } from 'mongoose';
 import type { UserExercise, RequestWithUser } from '@/types';
-import { workoutError } from '@/constants/errors';
+import { workoutError, invalidId } from '@/constants/errors';
 import { ApiError } from '@/helpers/api-errors';
 import { exerciseChecker, removeBar } from '@/utils';
 
@@ -30,9 +31,10 @@ const userWorkoutExist = (
   const id = req.params.id || removeBar(req.path);
   const { user } = req;
 
-  if (!user?.workout || Object.keys(user.workout).length === 0) {
+  if (!user?.workout || Object.keys(user.workout).length === 0)
     return res.status(204).send();
-  }
+
+  if (id && !isValidObjectId(id)) throw new ApiError(invalidId);
 
   if (id && !user.workout[id]) throw new ApiError(workoutError.notFound);
 

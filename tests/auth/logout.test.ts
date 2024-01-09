@@ -2,7 +2,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { createUserTest, deleteUserTest, getCookieTest, testServer } from '../helpers';
 
 const userTest = {
-    username: 'TestUser',
+    username: 'TestUser6',
     password: 'test12345'
 };
 
@@ -27,11 +27,13 @@ describe('/auth/logout', () => {
     it('should logout correctly',  async () => {
         const cookies = await getCookieTest(userTest);
         const result = await testServer.post('/auth/logout').set('Cookie', cookies);
+
         const onlyTokenLogoutCookies = result.header['set-cookie'][0].split(';')[0].replace('token=', '');
         const onlyRefreshLogoutToken = result.header['set-cookie'][1].split(';')[0].replace('refresh=', '');
 
         expect(result.statusCode).toEqual(200);
         expect(result.body).toHaveProperty('message', 'Logout Success');
+
         expect(onlyTokenLogoutCookies).toEqual('');
         expect(onlyRefreshLogoutToken).toEqual('');
     });
