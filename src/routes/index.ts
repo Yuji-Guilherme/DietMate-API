@@ -5,6 +5,7 @@ import { userRouter } from './user.router';
 import { authRouter } from './auth.router';
 import { dietRouter } from './diet.router';
 import { workoutRouter } from './workout.router';
+import { swaggerRouter } from './swagger.router';
 
 const router = Router();
 
@@ -14,5 +15,6 @@ router.use('/user', userRouter);
 router.use('/auth', authRouter);
 router.use('/diet', dietRouter);
 router.use('/workout', workoutRouter);
+router.use('/doc', swaggerRouter);
 
 export default router;

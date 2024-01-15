@@ -1,0 +1,1077 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Documentação Diet Mate",
+    "description": "Nessa documentação é possível consultar os end-points da API e testar as rotas",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "local"
+    }
+  ],
+  "paths": {
+    "/food": {
+      "get": {
+        "summary": "Retorna todas as comidas",
+        "description": "Rota responsável por retornar todas as comidas",
+        "tags": ["Food"],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Food"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/exercise": {
+      "get": {
+        "summary": "Retorna todos os exercícios",
+        "description": "Rota responsável por retornar todos os exercícios",
+        "tags": ["Exercise"],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Exercise"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth": {
+      "post": {
+        "summary": "Login do usuário",
+        "description": "Rota responsável por logar o usuário",
+        "tags": ["Auth"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "Users": {
+                  "value": {
+                    "username": "UserTest",
+                    "password": "123456"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK",
+            "header": {
+              "Set-Cookie": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "example": ["token=abcde12345; Max-Age=0000; Path=/; Expires=; HttpOnly", "refresh=abcde12345; Max-Age=0000; Path=/; Expires=; HttpOnly"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "summary": "Logout do usuário",
+        "description": "Rota responsável pelo logout o usuário",
+        "tags": ["Auth"],
+        "security": [{ "cookieRefreshAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "200": {
+            "description": "OK",
+            "header": {
+              "Set-Cookie": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "example": ["token=; Max-Age=0000; Path=/; Expires=; HttpOnly", "refresh=; Max-Age=0000; Path=/; Expires=; HttpOnly"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "summary": "Gera um novo refresh token",
+        "description": "Rota responsável por gerar um novo refresh token para o usuário",
+        "tags": ["Auth"],
+        "security": [{ "cookieRefreshAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "200": {
+            "description": "OK",
+            "header": {
+              "Set-Cookie": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "example":["token=abcde12345; Max-Age=0000; Path=/; Expires=; HttpOnly", "refresh=abcde12345; Max-Age=0000; Path=/; Expires=; HttpOnly"]
+                 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user": {
+      "post": {
+        "summary": "Cria um novo usuário",
+        "description": "Rota responsável por criar um novo usuário",
+        "tags": ["Users"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "Users": {
+                  "value": {
+                    "username": "UserTest",
+                    "password": "123456"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/User"
+                },
+                "examples": {
+                  "Users": {
+                    "value": {
+                      "username": "UserTest",
+                      "id": "65a4876cf15ef52bb2a77742"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Retorna o usuário logado",
+        "description": "Rota responsável por retornar o usuário logado",
+        "tags": ["Users"],
+        "security": [{ "cookieAccessAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Atualiza as informações usuário",
+        "description": "Rota responsável por trocar o username e/ou a senha do usuário",
+        "tags": ["Users"],
+        "security": [{ "cookieAccessAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "Users": {
+                  "value": {
+                    "username": "NewUserTest",
+                    "password": "123456"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deleta o usuário",
+        "description": "Rota responsável por deletar o usuário",
+        "tags": ["Users"],
+        "security": [{ "cookieAccessAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/diet": {
+      "post": {
+        "summary": "Adiciona um dieta",
+        "description": "Rota responsável por adicionar um dieta para um usuário",
+        "tags": ["Diet"],
+        "security": [{ "cookieAccessAuth": [] }],
+        "requestBody": {
+          "content":  {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/Diet"
+              },
+              "examples": {
+                "Diet": {
+                  "value": {
+                      "title": "dieta 1",
+                      "content": [
+                        {
+                          "calories": 0,
+                          "carbs": 0,
+                          "description": "comida 1",
+                          "fat": 0,
+                          "fiber": 0,
+                          "number": 0,
+                          "protein": 0
+                        }
+                      ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Diet"
+                },
+                "examples": {
+                  "Diet": {
+                    "value": {
+                        "title": "dieta 1",
+                        "content": [
+                          {
+                            "calories": 0,
+                            "carbs": 0,
+                            "description": "comida 1",
+                            "fat": 0,
+                            "fiber": 0,
+                            "number": 0,
+                            "protein": 0
+                          }
+                        ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Encontra todas as dietas do usuário",
+        "description": "Rota responsável por encontrar todas as dietas do usuário",
+        "tags": ["Diet"],
+        "security": [{ "cookieAccessAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "diet": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/Diet"
+                    }
+                  }
+                },
+                "examples": {
+                  "Diet": {
+                    "value": {
+                        "65a454201870affebc7c4546": {
+                          "title": "dieta 1",
+                          "content": [
+                            {
+                              "calories": 0,
+                              "carbs": 0,
+                              "description": "comida 1",
+                              "fat": 0,
+                              "fiber": 0,
+                              "number": 0,
+                              "protein": 0
+                            }
+                          ]
+                        }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletar todas as dietas do usuário",
+        "description": "Rota responsável por deletar todas as dietas do usuário",
+        "tags": ["Diet"],
+        "security": [{ "cookieAccessAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/diet/{id}": {
+      "get": {
+        "summary": "Encontra uma dieta do usuário",
+        "description": "Rota responsável por encontrar uma dieta específica do usuário",
+        "tags": ["Diet"],
+        "security": [{ "cookieAccessAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "description": "Diet ID",
+            "required": true
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Diet"
+                },
+                "examples": {
+                  "Diet": {
+                    "value": {
+                        "title": "dieta 1",
+                        "content": [
+                          {
+                            "calories": 0,
+                            "carbs": 0,
+                            "description": "comida 1",
+                            "fat": 0,
+                            "fiber": 0,
+                            "number": 0,
+                            "protein": 0
+                          }
+                        ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Atualiza uma dieta do usuário",
+        "description": "Rota responsável por atualiza uma dieta específica do usuário",
+        "tags": ["Diet"],
+        "security": [{ "cookieAccessAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "description": "Diet ID",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content":  {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/Diet"
+              },
+              "examples": {
+                "Diet": {
+                  "value": {
+                      "title": "dieta 2",
+                      "content": [
+                        {
+                          "calories": 0,
+                          "carbs": 0,
+                          "description": "comida 2",
+                          "fat": 0,
+                          "fiber": 0,
+                          "number": 0,
+                          "protein": 0
+                        }
+                      ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deleta uma dieta do usuário",
+        "description": "Rota responsável por deletar uma dieta específica do usuário",
+        "tags": ["Diet"],
+        "security": [{ "cookieAccessAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "description": "Diet ID",
+            "required": true
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/workout": {
+      "post": {
+        "summary": "Adiciona um treino",
+        "description": "Rota responsável por adicionar um treino para um usuário",
+        "tags": ["Workout"],
+        "security": [{ "cookieAccessAuth": [] }],
+        "requestBody": {
+          "content":  {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/Workout"
+              },
+              "examples": {
+                "Workout": {
+                  "value": {
+                      "title": "treino 1",
+                      "content": [
+                        {
+                          "number": 1,
+                          "exercise": "exercício 1",
+                          "muscle": "músculo 1",
+                          "unilateral": true,
+                          "dumbbell": true,
+                          "cable": true,
+                          "barbell": true,
+                          "smith": true,
+                          "machine": true,
+                          "bench": true
+                        }
+                      ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Workout"
+                },
+                "examples": {
+                  "Workout": {
+                    "value": {
+                        "title": "treino 1",
+                        "content": [
+                          {
+                            "number": 1,
+                            "exercise": "exercício 1",
+                            "muscle": "músculo 1",
+                            "unilateral": true,
+                            "dumbbell": true,
+                            "cable": true,
+                            "barbell": true,
+                            "smith": true,
+                            "machine": true,
+                            "bench": true
+                          }
+                        ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Encontra todos as treinos do usuário",
+        "description": "Rota responsável por encontrar todos as treinos do usuário",
+        "tags": ["Workout"],
+        "security": [{ "cookieAccessAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "workout": {
+                  "type": "object",
+                  "properties": {
+                    "workout": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "object",
+                          "$ref": "#/components/schemas/Workout"
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Workout": {
+                    "value": {
+                      "65a454201870affebc7c4547": {
+                        "title": "treino 1",
+                        "content": [
+                          {
+                            "number": 1,
+                            "exercise": "exercício 1",
+                            "muscle": "músculo 1",
+                            "unilateral": true,
+                            "dumbbell": true,
+                            "cable": true,
+                            "barbell": true,
+                            "smith": true,
+                            "machine": true,
+                            "bench": true
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletar todos as treinos do usuário",
+        "description": "Rota responsável por deletar todos as treinos do usuário",
+        "tags": ["Workout"],
+        "security": [{ "cookieAccessAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/workout/{id}": {
+      "get": {
+        "summary": "Encontra um treino do usuário",
+        "description": "Rota responsável por encontrar um treino específico do usuário",
+        "tags": ["Workout"],
+        "security": [{ "cookieAccessAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "description": "Workout ID",
+            "required": true
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Workout"
+                },
+                "examples": {
+                  "Workout": {
+                    "value": {
+                        "title": "treino 1",
+                        "content": [
+                          {
+                            "number": 1,
+                            "exercise": "exercício 1",
+                            "muscle": "músculo 1",
+                            "unilateral": true,
+                            "dumbbell": true,
+                            "cable": true,
+                            "barbell": true,
+                            "smith": true,
+                            "machine": true,
+                            "bench": true
+                          }
+                        ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Atualiza um treino do usuário",
+        "description": "Rota responsável por atualiza um treino específico do usuário",
+        "tags": ["Workout"],
+        "security": [{ "cookieAccessAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "description": "Workout ID",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content":  {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/Workout"
+              },
+              "examples": {
+                "Workout": {
+                  "value": {
+                      "title": "treino 2",
+                      "content": [
+                        {
+                          "number": 2,
+                          "exercise": "exercício 2",
+                          "muscle": "músculo 2",
+                          "unilateral": false,
+                          "dumbbell": true,
+                          "cable": false,
+                          "barbell": true,
+                          "smith": false,
+                          "machine": true,
+                          "bench": false
+                        }
+                      ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deleta um treino do usuário",
+        "description": "Rota responsável por deletar um treino específico do usuário",
+        "tags": ["Workout"],
+        "security": [{ "cookieAccessAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "description": "Workout ID",
+            "required": true
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securityScheme": {
+      "cookieRefreshAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "refresh"
+      },
+      "cookieAccessAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "token"
+      }
+    },
+    "schemas": {
+      "Food": {
+        "type": "object",
+        "properties": {
+          "calories": {
+            "type": "number"
+          },
+          "carbs": {
+            "type": "number"
+          },
+          "description": {
+            "type": "string"
+          },
+          "fat": {
+            "type": "number"
+          },
+          "fiber": {
+            "type": "number"
+          },
+          "number": {
+            "type": "number"
+          },
+          "protein": {
+            "type": "number"
+          }
+        }
+      },
+      "Exercise": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "number"
+          },
+          "exercise": {
+            "type": "string"
+          },
+          "muscle": {
+            "type": "string"
+          },
+          "unilateral": {
+            "type": "boolean"
+          },
+          "dumbbell": {
+            "type": "boolean"
+          },
+          "cable": {
+            "type": "boolean"
+          },
+          "barbell": {
+            "type": "boolean"
+          },
+          "smith": {
+            "type": "boolean"
+          },
+          "machine": {
+            "type": "boolean"
+          },
+          "bench": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Diet": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Food",
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "grams": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Workout": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Exercise",
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "required": ["username", "password"],
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "diet": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "object",
+                "$ref": "#/components/schemas/Diet"
+              }
+            }
+          },
+          "workout": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "object",
+                  "$ref": "#/components/schemas/Workout"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
