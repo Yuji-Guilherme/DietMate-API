@@ -1,10 +1,10 @@
 import type Express from 'express';
-import { User, RequestWithUser } from '@/types';
+import { User, RequestWithUser } from '../types';
 import {
   createUserService,
   updateUserService,
   deleteUserService
-} from '@/services/user.service';
+} from '../services/user.service';
 
 const createUser = async (
   req: Express.Request,

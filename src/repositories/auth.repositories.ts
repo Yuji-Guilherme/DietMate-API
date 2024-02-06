@@ -1,12 +1,12 @@
 import { model } from 'mongoose';
 import { sign } from 'jsonwebtoken';
-import { tokenEnv } from '@/config';
+import { tokenEnv } from '../config';
 import {
   accessTokenGenerateConfig,
   refreshTokenGenerateConfig
-} from '@/constants/token';
-import { UserSchema } from '@/models';
-import { User } from '@/types';
+} from '../constants/token';
+import { UserSchema } from '../models';
+import { User } from '../types';
 
 const collection = model('User', UserSchema, 'Users');
 

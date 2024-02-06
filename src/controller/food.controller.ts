@@ -1,5 +1,5 @@
-import { findAllFoodService } from '@/services/food.service';
 import type Express from 'express';
+import { findAllFoodService } from '../services/food.service';
 
 const findAllFood = async (
   _: Express.Request,

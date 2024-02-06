@@ -1,11 +1,11 @@
 import type Express from 'express';
 import { JwtPayload, verify } from 'jsonwebtoken';
 
-import { tokenEnv } from '@/config';
-import { unauthorized, forbidden, authError } from '@/constants/errors';
-import type { RequestWithUser, RequestWithId } from '@/types';
-import { findUserRepository } from '@/repositories/user.repositories';
-import { ApiError } from '@/helpers/api-errors';
+import { tokenEnv } from '../config';
+import { unauthorized, forbidden, authError } from '../constants/errors';
+import type { RequestWithUser, RequestWithId } from '../types';
+import { findUserRepository } from '../repositories/user.repositories';
+import { ApiError } from '../helpers/api-errors';
 
 const authMiddleware = (
   req: RequestWithUser,

@@ -1,11 +1,11 @@
 import type Express from 'express';
-import type { RequestWithUser } from '@/types';
+import type { RequestWithUser } from '../types';
 import {
   addDietService,
   deleteAllDietService,
   updateDietService,
   deleteOneDietService
-} from '@/services/diet.service';
+} from '../services/diet.service';
 
 const findAllDiet = async (req: RequestWithUser, res: Express.Response) => {
   const { user } = req;

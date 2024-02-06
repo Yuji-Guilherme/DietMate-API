@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { database } from '@/config';
+import { database } from '../config';
 
 const connectDataBase = async () => {
   console.log('Wait connecting to the database');

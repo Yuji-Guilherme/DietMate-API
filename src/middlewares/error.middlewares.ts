@@ -1,5 +1,5 @@
-import type { ApiError } from '@/helpers/api-errors';
-import Express from 'express';
+import type Express from 'express';
+import type { ApiError } from '../helpers/api-errors';
 
 const errorMiddleware = (
   error: Partial<ApiError>,

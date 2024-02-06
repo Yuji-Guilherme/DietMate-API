@@ -1,11 +1,11 @@
 import { Types } from 'mongoose';
-import type { UserDiet } from '@/types';
+import type { UserDiet } from '../types';
 import {
   addDietRepository,
   deleteAllDietRepository,
   updateDietRepository,
   deleteOneDietRepository
-} from '@/repositories/diet.repositories';
+} from '../repositories/diet.repositories';
 
 const deleteAllDietService = async (id: string) => {
   await deleteAllDietRepository(id!);

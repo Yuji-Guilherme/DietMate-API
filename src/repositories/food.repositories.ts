@@ -1,6 +1,6 @@
 import { model } from 'mongoose';
-import { FoodSchema } from '@/models';
-import type { Food } from '@/types';
+import { FoodSchema } from '../models';
+import type { Food } from '../types';
 
 const collection = model('Foods', FoodSchema, 'Foods');
 

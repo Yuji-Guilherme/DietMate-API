@@ -1,5 +1,5 @@
-import { Food } from '@/types';
 import { Schema, Types } from 'mongoose';
+import { Food } from '../../types';
 
 interface IFoodSchema extends Food {
   _id: Types.ObjectId;

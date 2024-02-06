@@ -1,7 +1,7 @@
 import { compare } from 'bcryptjs';
-import type { User } from '@/types';
-import { ApiError } from '@/helpers/api-errors';
-import { authError, forbidden } from '@/constants/errors';
+import type { User } from '../types';
+import { ApiError } from '../helpers/api-errors';
+import { authError, forbidden } from '../constants/errors';
 import {
   loginRepository,
   addRefreshTokenRepository,
@@ -9,7 +9,7 @@ import {
   updateRefreshTokenRepository,
   generateAccessToken,
   generateRefreshToken
-} from '@/repositories/auth.repositories';
+} from '../repositories/auth.repositories';
 
 type LoginParameter = {
   username: Pick<User, 'username'>;
