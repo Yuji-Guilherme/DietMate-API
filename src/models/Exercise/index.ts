@@ -1,5 +1,5 @@
-import { Exercise } from '@/types';
 import { Schema, Types } from 'mongoose';
+import { Exercise } from '../../types';
 
 interface IExerciseSchema extends Exercise {
   _id: Types.ObjectId;

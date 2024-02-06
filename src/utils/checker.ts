@@ -1,4 +1,4 @@
-import { UserExercise, UserFood } from '@/types';
+import { UserExercise, UserFood } from '../types';
 
 const foodChecker = (item: UserFood) =>
   item._id &&

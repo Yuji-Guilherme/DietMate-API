@@ -1,9 +1,9 @@
 import type Express from 'express';
 import { isValidObjectId } from 'mongoose';
-import type { UserExercise, RequestWithUser } from '@/types';
-import { workoutError, invalidId } from '@/constants/errors';
-import { ApiError } from '@/helpers/api-errors';
-import { exerciseChecker, removeBar } from '@/utils';
+import type { UserExercise, RequestWithUser } from '../types';
+import { workoutError, invalidId } from '../constants/errors';
+import { ApiError } from '../helpers/api-errors';
+import { exerciseChecker, removeBar } from '../utils';
 
 const validWorkout = (
   req: Express.Request,

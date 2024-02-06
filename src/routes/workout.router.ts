@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { authMiddleware } from '@/middlewares/auth.middlewares';
+import { authMiddleware } from '../middlewares/auth.middlewares';
 import {
   validWorkout,
   userWorkoutExist
-} from '@/middlewares/workout.middlewares';
+} from '../middlewares/workout.middlewares';
 import {
   findAllWorkout,
   deleteAllWorkout,
@@ -11,7 +11,7 @@ import {
   findOneWorkout,
   updateWorkout,
   deleteOneWorkout
-} from '@/controller/workout.controller';
+} from '../controller/workout.controller';
 
 const workoutRouter = Router();
 

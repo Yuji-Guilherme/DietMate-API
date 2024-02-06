@@ -1,5 +1,5 @@
 import type Express from 'express';
-import { findAllExerciseService } from '@/services/exercise.service';
+import { findAllExerciseService } from '../services/exercise.service';
 
 const findAllExercise = async (
   _: Express.Request,

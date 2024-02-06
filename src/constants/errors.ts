@@ -1,4 +1,4 @@
-import { ApiErrorParameters } from '@/helpers/api-errors';
+import { ApiErrorParameters } from '../helpers/api-errors';
 
 const unauthorized: ApiErrorParameters = {
   message: 'Unauthorized',

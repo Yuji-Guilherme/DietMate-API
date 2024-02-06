@@ -1,6 +1,6 @@
 import { Schema, Types } from 'mongoose';
 import { hash } from 'bcryptjs';
-import { User, UserDiet, UserWorkout } from '@/types';
+import { User, UserDiet, UserWorkout } from '../../types';
 import { FoodSchema } from '../Food';
 import { ExerciseSchema } from '../Exercise';
 

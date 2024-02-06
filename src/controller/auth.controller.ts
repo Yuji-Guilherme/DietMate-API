@@ -2,13 +2,13 @@ import type Express from 'express';
 import {
   cookieAccessTokenConfig,
   cookieRefreshTokenConfig
-} from '@/constants/token';
+} from '../constants/token';
 import {
   loginService,
   logoutService,
   refreshService
-} from '@/services/auth.service';
-import { RequestWithId } from '@/types';
+} from '../services/auth.service';
+import { RequestWithId } from '../types';
 
 const login = async (
   req: Express.Request,

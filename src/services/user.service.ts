@@ -1,12 +1,12 @@
 import type { Types } from 'mongoose';
-import type { User } from '@/types';
-import { ApiError } from '@/helpers/api-errors';
-import { userError } from '@/constants/errors';
+import type { User } from '../types';
+import { ApiError } from '../helpers/api-errors';
+import { userError } from '../constants/errors';
 import {
   createUserRepository,
   deleteUserRepository,
   updateUserRepository
-} from '@/repositories/user.repositories';
+} from '../repositories/user.repositories';
 
 const createUserService = async ({ username, password }: User) => {
   if (!username || !password) throw new ApiError(userError.submitAllFields);

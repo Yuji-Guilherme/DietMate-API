@@ -1,5 +1,5 @@
-import { Food, Exercise } from '@/types';
 import { Types } from 'mongoose';
+import { Food, Exercise } from '..';
 
 interface UserFood extends Food {
   _id: Types.ObjectId;
