@@ -9,11 +9,13 @@ import router from './routes';
 import { errorMiddleware } from './middlewares/error.middlewares';
 
 const app = express();
+const corsOrigin = process.env.CORS_ORIGIN || '';
 
 connectDataBase();
 
 app.use(
   cors({
+    origin: ['http://localhost:3000', corsOrigin],
     credentials: true,
     allowedHeaders: ['content-type'],
     methods: ['GET', 'POST', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS']
