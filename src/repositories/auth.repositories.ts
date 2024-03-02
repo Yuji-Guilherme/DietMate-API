@@ -18,13 +18,8 @@ const addRefreshTokenRepository = async (id: string, refreshToken: string) =>
 
 const updateRefreshTokenRepository = async (
   id: string,
-  oldRefreshToken: string,
   newRefreshToken: string
-) =>
-  collection.findOneAndUpdate(
-    { _id: id, token: oldRefreshToken },
-    { token: newRefreshToken }
-  );
+) => collection.findOneAndUpdate({ _id: id }, { token: newRefreshToken });
 
 const deleteRefreshTokenRepository = async (id: string) =>
   collection.findByIdAndUpdate(id, { token: '' });

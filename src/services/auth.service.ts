@@ -48,15 +48,13 @@ const logoutService = async (id: string) => {
   return { message: 'Logout Success' };
 };
 
-const refreshService = async (id: string, refreshToken: string) => {
+const refreshService = async (id: string) => {
   const newAccessToken = generateAccessToken(id);
   const newRefreshToken = generateRefreshToken(id);
 
-  const user = await updateRefreshTokenRepository(
-    id,
-    refreshToken,
-    newRefreshToken
-  );
+  const user = await updateRefreshTokenRepository(id, newRefreshToken);
+
+  console.log(user);
 
   if (!user || !user.token) throw new ApiError(forbidden);
 
