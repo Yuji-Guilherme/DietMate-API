@@ -8,10 +8,10 @@ import {
 } from '../services/workout.service';
 
 const findAllWorkout = async (req: RequestWithUser, res: Express.Response) => {
-  const { user } = req;
+  const { workout } = req.user!;
 
   res.status(200).send({
-    workout: user!.workout
+    workout
   });
 };
 

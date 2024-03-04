@@ -8,10 +8,10 @@ import {
 } from '../services/diet.service';
 
 const findAllDiet = async (req: RequestWithUser, res: Express.Response) => {
-  const { user } = req;
+  const { diet } = req.user!;
 
   res.status(200).send({
-    diet: user!.diet
+    diet
   });
 };
 
