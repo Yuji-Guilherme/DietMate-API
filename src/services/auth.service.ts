@@ -54,8 +54,6 @@ const refreshService = async (id: string) => {
 
   const user = await updateRefreshTokenRepository(id, newRefreshToken);
 
-  console.log(user);
-
   if (!user || !user.token) throw new ApiError(forbidden);
 
   return { newAccessToken, newRefreshToken };
