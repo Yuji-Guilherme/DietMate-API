@@ -1,7 +1,7 @@
 import { compare } from 'bcryptjs';
-import type { User } from '@/types';
-import { ApiError } from '@/helpers/api-errors';
-import { authError, forbidden } from '@/constants/errors';
+import type { User } from '../types';
+import { ApiError } from '../helpers/api-errors';
+import { authError, forbidden } from '../constants/errors';
 import {
   loginRepository,
   addRefreshTokenRepository,
@@ -9,7 +9,7 @@ import {
   updateRefreshTokenRepository,
   generateAccessToken,
   generateRefreshToken
-} from '@/repositories/auth.repositories';
+} from '../repositories/auth.repositories';
 
 type LoginParameter = {
   username: Pick<User, 'username'>;
@@ -48,15 +48,11 @@ const logoutService = async (id: string) => {
   return { message: 'Logout Success' };
 };
 
-const refreshService = async (id: string, refreshToken: string) => {
+const refreshService = async (id: string) => {
   const newAccessToken = generateAccessToken(id);
   const newRefreshToken = generateRefreshToken(id);
 
-  const user = await updateRefreshTokenRepository(
-    id,
-    refreshToken,
-    newRefreshToken
-  );
+  const user = await updateRefreshTokenRepository(id, newRefreshToken);
 
   if (!user || !user.token) throw new ApiError(forbidden);
 

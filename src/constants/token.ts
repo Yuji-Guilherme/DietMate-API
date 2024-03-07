@@ -6,7 +6,9 @@ const weekInMilliseconds = 7 * 24 * hourInMilliseconds;
 
 const cookieAccessTokenConfig: Express.CookieOptions = {
   httpOnly: true,
-  maxAge: hourInMilliseconds
+  maxAge: hourInMilliseconds,
+  sameSite: 'none',
+  secure: true
 };
 
 const accessTokenGenerateConfig: SignOptions = { expiresIn: '1h' };
@@ -14,6 +16,8 @@ const accessTokenGenerateConfig: SignOptions = { expiresIn: '1h' };
 const cookieRefreshTokenConfig: Express.CookieOptions = {
   httpOnly: true,
   maxAge: weekInMilliseconds,
+  sameSite: 'none',
+  secure: true,
   signed: true
 };
 

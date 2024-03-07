@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { validRefreshToken } from '@/middlewares/auth.middlewares';
-import { login, logout, refresh } from '@/controller/auth.controller';
+import { validRefreshToken } from '../middlewares/auth.middlewares';
+import { login, logout, refresh } from '../controller/auth.controller';
 
 const authRouter = Router();
 

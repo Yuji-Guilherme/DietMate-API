@@ -1,8 +1,9 @@
 import { Schema, Types } from 'mongoose';
 import { hash } from 'bcryptjs';
-import { User, UserDiet, UserWorkout } from '@/types';
+import { User, UserDiet, UserWorkout } from '../../types';
 import { FoodSchema } from '../Food';
 import { ExerciseSchema } from '../Exercise';
+import { PreferenceSchema } from '../Preference';
 
 interface IUserSchema extends User {
   _id: Types.ObjectId;
@@ -48,6 +49,7 @@ const UserSchema = new Schema<IUserSchema>(
     },
     diet: { type: Object, of: { type: UserDietSchema } },
     workout: { type: Object, of: { type: UserWorkoutSchema } },
+    preference: { type: Object, of: PreferenceSchema },
     token: { type: String }
   },
   { collection: 'Users' }

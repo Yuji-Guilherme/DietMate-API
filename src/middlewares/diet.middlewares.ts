@@ -1,9 +1,9 @@
 import type Express from 'express';
 import { isValidObjectId } from 'mongoose';
-import type { UserFood, RequestWithUser } from '@/types';
-import { dietError, invalidId } from '@/constants/errors';
-import { ApiError } from '@/helpers/api-errors';
-import { foodChecker, removeBar } from '@/utils';
+import type { UserFood, RequestWithUser } from '../types';
+import { dietError, invalidId } from '../constants/errors';
+import { ApiError } from '../helpers/api-errors';
+import { foodChecker, removeBar } from '../utils';
 
 const validDiet = (
   req: Express.Request,

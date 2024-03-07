@@ -1,4 +1,4 @@
-import { UserExercise, UserFood } from '@/types';
+import { Preference, UserExercise, UserFood } from '../types';
 
 const foodChecker = (item: UserFood) =>
   item._id &&
@@ -24,4 +24,10 @@ const exerciseChecker = (item: UserExercise) =>
   typeof item.smith === 'boolean' &&
   typeof item.unilateral === 'boolean';
 
-export { foodChecker, exerciseChecker };
+const checkPreference = (prefer: Preference) => {
+  const values = Object.values(prefer);
+  const check = values.every((item) => typeof item === 'number' && item >= 0);
+  return check;
+};
+
+export { foodChecker, exerciseChecker, checkPreference };

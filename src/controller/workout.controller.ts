@@ -1,17 +1,17 @@
 import type Express from 'express';
-import type { RequestWithUser } from '@/types';
+import type { RequestWithUser } from '../types';
 import {
   addWorkoutService,
   deleteAllWorkoutService,
   deleteOneWorkoutService,
   updateWorkoutService
-} from '@/services/workout.service';
+} from '../services/workout.service';
 
 const findAllWorkout = async (req: RequestWithUser, res: Express.Response) => {
-  const { user } = req;
+  const { workout } = req.user!;
 
   res.status(200).send({
-    workout: user!.workout
+    workout
   });
 };
 

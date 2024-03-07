@@ -1,4 +1,4 @@
-import { ApiErrorParameters } from '@/helpers/api-errors';
+import { ApiErrorParameters } from '../helpers/api-errors';
 
 const unauthorized: ApiErrorParameters = {
   message: 'Unauthorized',
@@ -41,6 +41,13 @@ const userError: Record<string, ApiErrorParameters> = {
   }
 };
 
+const preferError: Record<string, ApiErrorParameters> = {
+  create: { message: 'Error creating preference', status: 400 },
+  submit: { message: 'Submit preference', status: 400 },
+  submitOne: { message: 'Submit at least one preference', status: 400 },
+  invalid: { message: 'Invalid preference', status: 400 }
+};
+
 const dietError: Record<string, ApiErrorParameters> = {
   submit: { message: 'Submit a diet', status: 400 },
   submitTitle: { message: 'Submit a title for diet', status: 400 },
@@ -64,5 +71,6 @@ export {
   authError,
   userError,
   dietError,
-  workoutError
+  workoutError,
+  preferError
 };

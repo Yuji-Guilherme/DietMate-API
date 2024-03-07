@@ -1,6 +1,6 @@
-import { ApiError } from '@/helpers/api-errors';
-import { exerciseError } from '@/constants/errors';
-import { findAllExerciseRepository } from '@/repositories/exercise.repositories';
+import { ApiError } from '../helpers/api-errors';
+import { exerciseError } from '../constants/errors';
+import { findAllExerciseRepository } from '../repositories/exercise.repositories';
 
 const findAllExerciseService = async () => {
   const exercises = await findAllExerciseRepository();

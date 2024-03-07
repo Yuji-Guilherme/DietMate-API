@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { authMiddleware } from '@/middlewares/auth.middlewares';
-import { validDiet, userDietExist } from '@/middlewares/diet.middlewares';
+import { authMiddleware } from '../middlewares/auth.middlewares';
+import { validDiet, userDietExist } from '../middlewares/diet.middlewares';
 import {
   findAllDiet,
   addDiet,
@@ -8,7 +8,7 @@ import {
   findOneDiet,
   updateDiet,
   deleteOneDiet
-} from '@/controller/diet.controller';
+} from '../controller/diet.controller';
 
 const dietRouter = Router();
 

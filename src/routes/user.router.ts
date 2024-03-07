@@ -4,8 +4,8 @@ import {
   findUser,
   updateUser,
   deleteUser
-} from '@/controller/user.controller';
-import { authMiddleware } from '@/middlewares/auth.middlewares';
+} from '../controller/user.controller';
+import { authMiddleware } from '../middlewares/auth.middlewares';
 
 const userRouter = Router();
 

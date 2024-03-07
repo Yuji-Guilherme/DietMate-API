@@ -1,6 +1,6 @@
 import { model } from 'mongoose';
-import { UserSchema } from '@/models';
-import type { UserWorkout } from '@/types';
+import { UserSchema } from '../models';
+import type { UserWorkout } from '../types';
 
 const collection = model('User', UserSchema, 'Users');
 

@@ -2,13 +2,13 @@ import type Express from 'express';
 import {
   cookieAccessTokenConfig,
   cookieRefreshTokenConfig
-} from '@/constants/token';
+} from '../constants/token';
 import {
   loginService,
   logoutService,
   refreshService
-} from '@/services/auth.service';
-import { RequestWithId } from '@/types';
+} from '../services/auth.service';
+import { RequestWithId } from '../types';
 
 const login = async (
   req: Express.Request,
@@ -59,13 +59,9 @@ const refresh = async (
   next: Express.NextFunction
 ) => {
   const { id } = req;
-  const refreshToken = req.signedCookies.refresh;
 
   try {
-    const { newAccessToken, newRefreshToken } = await refreshService(
-      id!,
-      refreshToken
-    );
+    const { newAccessToken, newRefreshToken } = await refreshService(id!);
 
     res.cookie('token', newAccessToken, cookieAccessTokenConfig);
     res.cookie('refresh', newRefreshToken, cookieRefreshTokenConfig);

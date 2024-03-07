@@ -1,11 +1,11 @@
 import { Types } from 'mongoose';
-import type { UserWorkout } from '@/types';
+import type { UserWorkout } from '../types';
 import {
   addWorkoutRepository,
   deleteAllWorkoutRepository,
   updateWorkoutRepository,
   deleteOneWorkoutRepository
-} from '@/repositories/workout.repositories';
+} from '../repositories/workout.repositories';
 
 const deleteAllWorkoutService = async (id: string) => {
   await deleteAllWorkoutRepository(id!);

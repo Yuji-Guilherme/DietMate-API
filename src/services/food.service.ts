@@ -1,6 +1,6 @@
-import { ApiError } from '@/helpers/api-errors';
-import { foodError } from '@/constants/errors';
-import { findAllFoodRepository } from '@/repositories/food.repositories';
+import { ApiError } from '../helpers/api-errors';
+import { foodError } from '../constants/errors';
+import { findAllFoodRepository } from '../repositories/food.repositories';
 
 const findAllFoodService = async () => {
   const foods = await findAllFoodRepository();

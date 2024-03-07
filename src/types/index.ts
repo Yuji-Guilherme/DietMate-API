@@ -8,6 +8,7 @@ import type {
   UserDiet,
   UserWorkout
 } from './User';
+import type { Preference } from './Preference';
 
 export type {
   Food,
@@ -18,5 +19,6 @@ export type {
   UserFood,
   UserExercise,
   UserDiet,
-  UserWorkout
+  UserWorkout,
+  Preference
 };

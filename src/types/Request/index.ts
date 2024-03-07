@@ -1,6 +1,6 @@
 import type Express from 'express';
 import type { Types } from 'mongoose';
-import type { User } from '@/types';
+import type { User } from '..';
 
 interface UserWithId extends User {
   _id: Types.ObjectId;

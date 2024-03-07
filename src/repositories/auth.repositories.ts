@@ -1,12 +1,12 @@
 import { model } from 'mongoose';
 import { sign } from 'jsonwebtoken';
-import { tokenEnv } from '@/config';
+import { tokenEnv } from '../config';
 import {
   accessTokenGenerateConfig,
   refreshTokenGenerateConfig
-} from '@/constants/token';
-import { UserSchema } from '@/models';
-import { User } from '@/types';
+} from '../constants/token';
+import { UserSchema } from '../models';
+import { User } from '../types';
 
 const collection = model('User', UserSchema, 'Users');
 
@@ -18,13 +18,8 @@ const addRefreshTokenRepository = async (id: string, refreshToken: string) =>
 
 const updateRefreshTokenRepository = async (
   id: string,
-  oldRefreshToken: string,
   newRefreshToken: string
-) =>
-  collection.findOneAndUpdate(
-    { _id: id, token: oldRefreshToken },
-    { token: newRefreshToken }
-  );
+) => collection.findOneAndUpdate({ _id: id }, { token: newRefreshToken });
 
 const deleteRefreshTokenRepository = async (id: string) =>
   collection.findByIdAndUpdate(id, { token: '' });

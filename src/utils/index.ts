@@ -1,4 +1,4 @@
-import { foodChecker, exerciseChecker } from './checker';
+import { foodChecker, exerciseChecker, checkPreference } from './checker';
 import { removeBar } from './removeBar';
 
-export { foodChecker, exerciseChecker, removeBar };
+export { foodChecker, exerciseChecker, checkPreference, removeBar };
