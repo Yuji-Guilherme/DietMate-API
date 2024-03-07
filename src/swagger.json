@@ -922,6 +922,178 @@
           }
         }
       }
+    },
+    "/preference": {
+      "post": {
+        "summary": "Adiciona as preferências do usuário",
+        "description": "Rota responsável por adicionar as preferências do usuário",
+        "tags": ["Preference"],
+        "security": [{ "cookieAccessAuth": [] }],
+        "requestBody": {
+          "content":  {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/Preference"
+              },
+              "examples": {
+                "preference": {
+                  "value": {
+                    "water": 1,
+                    "calories": 2,
+                    "protein": 3,
+                    "carb": 4,
+                    "fat": 5,
+                    "currentWeight": 6,
+                    "targetWeight": 7
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Preference"
+                },
+                "examples": {
+                  "preference": {
+                    "value": {
+                      "water": 1,
+                      "calories": 2,
+                      "protein": 3,
+                      "carb": 4,
+                      "fat": 5,
+                      "currentWeight": 6,
+                      "targetWeight": 7
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+    },
+      "get": {
+        "summary": "Encontra as preferências do usuário",
+        "description": "Rota responsável por retornar as preferências do usuário",
+        "tags": ["Preference"],
+        "security": [{ "cookieAccessAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Preference"
+                },
+                "examples": {
+                  "preference": {
+                    "value": {
+                      "water": 1,
+                      "calories": 2,
+                      "protein": 3,
+                      "carb": 4,
+                      "fat": 5,
+                      "currentWeight": 6,
+                      "targetWeight": 7
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Atualiza as preferências do usuário",
+        "description": "Rota responsável por atualizar as preferências do usuário",
+        "tags": ["Preference"],
+        "security": [{ "cookieAccessAuth": [] }],
+        "requestBody": {
+          "content":  {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/Preference"
+              },
+              "examples": {
+                "preference": {
+                  "value": {
+                    "water": 7,
+                    "calories": 6,
+                    "protein": 5,
+                    "fat": 3,
+                    "currentWeight": 2,
+                    "targetWeight": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deleta as preferências do usuário",
+        "description": "Rota responsável por deletar as preferências do usuário",
+        "tags": ["Preference"],
+        "security": [{ "cookieAccessAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -999,6 +1171,32 @@
           }
         }
       },
+      "Preference": {
+        "type": "object",
+        "properties": {
+          "calories": {
+            "type": "number"
+          },
+          "carb": {
+            "type": "number"
+          },
+          "protein": {
+            "type": "number"
+          },
+          "fat": {
+            "type": "number"
+          },
+          "water": {
+            "type": "number"
+          },
+          "currentWeight": {
+            "type": "number"
+          },
+          "targetWeight": {
+            "type": "number"
+          }
+        }
+      },
       "Diet": {
         "type": "object",
         "properties": {
@@ -1069,6 +1267,10 @@
                   "$ref": "#/components/schemas/Workout"
               }
             }
+          },
+          "preference": {
+            "type": "object",
+            "$ref": "#/components/schemas/Preference"
           }
         }
       }
